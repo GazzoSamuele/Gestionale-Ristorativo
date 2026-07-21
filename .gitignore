@@ -42,3 +42,4 @@ next-env.d.ts
 
 # guida-librerie.md
 # stack.md
+/src/generated/prisma
