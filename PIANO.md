@@ -122,6 +122,16 @@ aggiorna prima il server e poi lo stato locale. Next App Router fa l'inverso.
 | Pannelli laterali collassabili | **WhatsApp** (è Fase 2) | `ora`/`data` da stringa a `DateTime` |
 | | `react-calendar` → si rivaluta nella Fetta 2 | |
 
+### 4-bis. Il trapianto, in tre passi
+- [x] **Passo 1 — la sala ferma**: rotta `operatore/sala/tavoli`, Server Component che legge i
+      tavoli da Prisma e li posiziona in percentuale sulla piantina (sfondo CSS).
+      ⚠️ `public/` non si importa: si serve da URL (`/piantine-sale/…`, senza `public`).
+      ⚠️ `.sala` aveva `height: 100%` (dipendeva dal flex del progetto vecchio) →
+      sostituito con `aspect-ratio: 1205 / 805`, le proporzioni del `viewBox` dell'SVG.
+- [ ] **Passo 2 — il trascinamento**: `TavoloCard` come Client Component, Pointer Events
+      copiati dal vecchio. Ancora nessun salvataggio: al ricaricamento i tavoli tornano indietro.
+- [ ] **Passo 3 — il salvataggio**: prima Server Action, al rilascio.
+
 ### 5. Azioni e rifiniture
 - [ ] Azioni: siedi · libera · **walk-in**
 - [ ] Allargare la maniglia di trascinamento: nel vecchio è solo l'`<h2>`, bersaglio

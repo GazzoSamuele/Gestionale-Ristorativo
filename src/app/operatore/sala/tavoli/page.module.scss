@@ -1,0 +1,113 @@
+$espresso: #43291a;
+$cream: #f5ead6;
+$cream-card: #fbf4e6;
+$sage: #7e8353;
+$terracotta: #c87a3a;
+$accent: #db8b3e;
+$muted: #8a7962;
+
+// Stati
+$verde: #2e8b57;
+$rosso: #c0392b;
+$giallo: #d4a017;
+
+$radius: 22px;
+$gap: 18px;
+$padding: 22px;
+
+$serif: "Cormorant Garamond", serif;
+$sans: "Manrope", sans-serif;
+
+.sala {
+  position: relative;
+  aspect-ratio: 1205 / 805;
+  padding: 0;
+  border-radius: $radius;
+  overflow: hidden;
+  // I file in public/ si servono dalla radice: "public" NON va nell'indirizzo.
+  background-image: url("/piantine-sale/piantina1.svg");
+  background-color: $espresso;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  box-shadow:
+    inset 0px 0px 0px 10px #3b2417,
+    inset 0 12px 0px 0px #3b2417;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse at 50% 40%,
+      rgba(219, 139, 62, 0.1),
+      transparent 70%
+    );
+  }
+}
+
+.tavoloCard {
+  position: absolute;
+  width: 10%;
+  padding: 0;
+  border-radius: $radius;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: #43291a;
+  background: #fcf7ec;
+  border: 1px solid rgba(59, 36, 24, 0.06);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28);
+  transition: box-shadow 0.2s;
+  align-items: center;
+  gap: $gap;
+
+  h2 {
+    margin: 0;
+    padding: 10px 14px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1;
+    color: #fff;
+    cursor: grab;
+  }
+
+  p {
+    margin: 10px 0 0;
+    padding: 0 14px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #8a7962;
+    text-transform: uppercase;
+  }
+
+  &.tavoloLibero h2 {
+    background: $verde;
+    width: 100%;
+    text-align: center;
+  }
+  &.tavoloOccupato h2 {
+    background: $rosso;
+    width: 100%;
+    text-align: center;
+  }
+  &.tavoloRiservato h2 {
+    background: $giallo;
+    width: 100%;
+    text-align: center;
+  }
+
+  &.evidenziato {
+    outline: none;
+    box-shadow:
+      0 0 0 3px #e8c24a,
+      0 0 26px 4px rgba(232, 194, 74, 0.6);
+  }
+}
+
+.tavoloInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px 12px;
+  align-items: center;
+}
