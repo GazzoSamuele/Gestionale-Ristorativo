@@ -40,6 +40,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# guida-librerie.md
-# stack.md
+# documenti di lavoro personali: visione commerciale, piano, wireframe.
+# Restano sul disco ma fuori dal repository pubblico.
+/docs/
+
+# client Prisma: e' un prodotto dello schema, si rigenera con "prisma generate"
 /src/generated/prisma
+
+.claude

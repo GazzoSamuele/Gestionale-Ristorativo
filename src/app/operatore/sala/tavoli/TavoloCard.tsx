@@ -2,15 +2,34 @@
 
 import { useState, useRef, type PointerEvent } from "react";
 import { toast } from "sonner";
-import type { Tavolo } from "@/generated/prisma/client";
-import { spostaTavolo } from "./actions";
+import type { Tavolo, Occupazione } from "@/generated/prisma/client";
+import { spostaTavolo, occupaTavolo, liberaTavolo } from "./actions";
 import styles from "./page.module.scss";
+import TempoTrascorso from "./TempoTrascorso";
 
-export default function TavoloCard({ tavolo }: { tavolo: Tavolo }) {
+export default function TavoloCard({ tavolo, occupato, occupazione }: { tavolo: Tavolo; occupato: boolean; occupazione?: Occupazione }) {
 
   const [pos, setPos] = useState({ x: tavolo.posX, y: tavolo.posY });
 
   const dragStart = useRef({ mouseX: 0, mouseY: 0, posX: 0, posY: 0, dragging: false });
+
+  const [coperti, setCoperti] = useState(tavolo.capienza);
+
+  const handleSiedi = async () => {
+    const esito = await occupaTavolo({ tavoloId: tavolo.id, copertiPresenti: coperti });
+
+    if (!esito.ok) {
+      toast.error(esito.errore);
+    }
+  };
+
+  const handleLibera = async () => {
+    const esito = await liberaTavolo({ tavoloId: tavolo.id });
+
+    if (!esito.ok) {
+      toast.error(esito.errore);
+    }
+  };
 
   const handlePointerDown = (e: PointerEvent<HTMLElement>) => {
     dragStart.current = {
@@ -64,14 +83,31 @@ export default function TavoloCard({ tavolo }: { tavolo: Tavolo }) {
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
-      className={`${styles.tavoloCard} ${styles.tavoloLibero}`}
+      className={`${styles.tavoloCard} ${occupato ? styles.tavoloOccupato : styles.tavoloLibero}`}
       style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
     >
       <h2>Tavolo {tavolo.numero}</h2>
 
       <div className={styles.tavoloInfo}>
-        <p>{tavolo.capienza} posti</p>
+        <p>{occupazione ? `${occupazione.copertiPresenti} / ${tavolo.capienza}` : tavolo.capienza} posti</p>
+      
+      {occupazione && <TempoTrascorso da={occupazione.iniziataAlle} />}
       </div>
+    
+      {!occupato && (
+      <div className={styles.azioniTavolo} onPointerDown={(e) => e.stopPropagation()}>
+        <input
+          type="number"
+          min={1}
+          value={coperti}
+          onChange={(e) => setCoperti(Number(e.target.value))}
+        />
+        <button type="button" onClick={handleSiedi}>Siedi</button>
+      </div>
+    )}
+    {occupato && (
+          <button className='btnLiberaTavolo' onClick={handleLibera}>Libera tavolo</button>
+        )}
     </div>
   );
 }

@@ -111,3 +111,27 @@ $sans: "Manrope", sans-serif;
   align-items: center;
 }
 
+.azioniTavolo {
+  display: flex;
+  gap: 6px;
+  padding: 8px;
+
+  input {
+    width: 48px;
+    text-align: center;
+  }
+}
+
+.btnLiberaTavolo {
+  align-self: flex-start;
+  padding: 10px;
+  background: $giallo;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 0;
+}
