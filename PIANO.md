@@ -37,10 +37,16 @@ Niente sala, niente prenotazioni.
 **Verificato**: 4 righe reali in PostgreSQL, `tsc --noEmit` pulito.
 
 ### Code da chiudere (5 minuti, non bloccanti)
-- [ ] Agganciare il seed: `seed` va nel blocco `migrations` di `prisma.config.ts` (Prisma 7),
-      altrimenti `npx prisma db seed` non funziona e tra un mese non ricordi come si lanciava
+- [x] Seed agganciato: `seed: "tsx prisma/seed.ts"` nel blocco `migrations` di `prisma.config.ts`,
+      con `tsx` dichiarato in `devDependencies` (c'era solo di rimbalzo da Prisma).
+      Gesto ufficiale: `npx prisma db seed`
 - [ ] `connectionString` può essere `undefined`: controllo esplicito all'avvio con un messaggio
       leggibile, o l'errore che arriva è incomprensibile
+
+### Lezione da tenere
+**"Non ha dato errore" ≠ "ha funzionato".** Un comando che non fa nulla è silenzioso come uno
+che riesce. L'unica verifica che vale è guardare il risultato (tabella o schermo).
+Vale doppio con le Server Actions della Fetta 1.
 
 ### Note su Prisma 7 (verificate su questo progetto)
 - `datasource db` **non** contiene più `url` → sta in `prisma.config.ts`.
@@ -61,16 +67,19 @@ Trapianto dal progetto **App_Gestione_Tavoli_Ristorante**
 Inventario fatto il 21 lug 2026: lo stack del frontend **combacia**, è un trasloco fra
 appartamenti dello stesso palazzo.
 
-### 1. Schema — da fare per primo (2 minuti, DB ancora vuoto)
-- [ ] `posX` / `posY` da `Int` a **`Float`**
+### 1. Schema
+- [x] `posX` / `posY` da `Int` a **`Float`** (migrazione `coordinate_percentuali`)
       → il progetto vecchio salva le coordinate **in percentuale**
         (`(e.clientX - start) / rect.width * 100`, reso come `left: {x}%`).
         Con `Int` i decimali si perdono e il tavolo scatta durante il trascinamento.
-- [ ] Correggere il seed: valori **tra 0 e 100** (oggi c'è `200` = fuori schermo)
-- [ ] Decidere se tenere il concetto **`sala`** (4 piantine SVG, vincolo unico su
-      `numero + sala` → "Tavolo 1" può esistere in ogni sala).
-      Costa un campo; se lo tieni, `numero @unique` va sostituito da `@@unique([numero, sala])`
-- [ ] Modelli `Prenotazione` e `Occupazione` (⚠️ entità **distinte** dal Tavolo)
+- [x] Seed con valori **tra 0 e 100**
+- [ ] ⏸️ **`sala` rimandato di proposito**: il concetto si tiene, la colonna si aggiunge
+      **quando si porta dentro il selettore delle piantine** — con il componente davanti si
+      saprà se è una stringa o un modello `Sala` a sé.
+      ⚠️ Nel progetto vecchio l'identità della sala è **il percorso dell'SVG**
+      (`/piantine-sale/piantina1.svg`): rinomini il file e perdi il legame con ogni tavolo.
+      Serve un identificativo stabile. Se si aggiunge, `numero @unique` → `@@unique([numero, sala])`
+- [ ] Modelli `Prenotazione` e `Occupazione` (⚠️ entità **distinte** dal Tavolo) ← **prossimo passo**
 
 ### 2. 🔴 Il cambiamento strutturale
 Nel progetto vecchio lo stato del tavolo **non è un dato**: è dedotto dalla prenotazione
