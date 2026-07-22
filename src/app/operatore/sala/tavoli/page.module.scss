@@ -24,7 +24,6 @@ $sans: "Manrope", sans-serif;
   padding: 0;
   border-radius: $radius;
   overflow: hidden;
-  // I file in public/ si servono dalla radice: "public" NON va nell'indirizzo.
   background-image: url("/piantine-sale/piantina1.svg");
   background-color: $espresso;
   background-size: 100% 100%;
@@ -111,3 +110,4 @@ $sans: "Manrope", sans-serif;
   gap: 6px 12px;
   align-items: center;
 }
+

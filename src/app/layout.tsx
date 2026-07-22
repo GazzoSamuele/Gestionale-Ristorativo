@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.scss";
 
 const geistSans = Geist({
@@ -24,7 +25,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="it" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+
+        {/* Contenitore degli avvisi: senza questo, toast.error() non ha dove
+            comparire e non succede niente. In alto a destra come deciso in
+            STRUTTURA.md, per non litigare con la barra di navigazione in basso. */}
+        <Toaster position="top-right" richColors />
+      </body>
     </html>
   );
 }

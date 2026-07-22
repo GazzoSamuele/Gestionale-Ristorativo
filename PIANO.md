@@ -128,15 +128,18 @@ aggiorna prima il server e poi lo stato locale. Next App Router fa l'inverso.
       ⚠️ `public/` non si importa: si serve da URL (`/piantine-sale/…`, senza `public`).
       ⚠️ `.sala` aveva `height: 100%` (dipendeva dal flex del progetto vecchio) →
       sostituito con `aspect-ratio: 1205 / 805`, le proporzioni del `viewBox` dell'SVG.
-- [ ] **Passo 2 — il trascinamento**: `TavoloCard` come Client Component, Pointer Events
-      copiati dal vecchio. Ancora nessun salvataggio: al ricaricamento i tavoli tornano indietro.
+- [x] **Passo 2 — il trascinamento**: `TavoloCard` come Client Component, Pointer Events
+      copiati dal vecchio. Nessun salvataggio: al ricaricamento i tavoli tornano indietro.
+      ⚠️ Con gli SCSS Modules la classe nel browser è trasformata (`page_sala__a3F9x`):
+      `closest()` va costruito con `` `.${styles.sala}` ``, non con `.sala` scritto a mano.
+      ✅ I gestori sono sull'intera card, non sull'`h2` → la maniglia larga è già risolta.
 - [ ] **Passo 3 — il salvataggio**: prima Server Action, al rilascio.
 
 ### 5. Azioni e rifiniture
 - [ ] Azioni: siedi · libera · **walk-in**
-- [ ] Allargare la maniglia di trascinamento: nel vecchio è solo l'`<h2>`, bersaglio
-      troppo piccolo per un dito su tablet in servizio
+- [x] Maniglia di trascinamento larga (tutta la card, non solo l'`h2`)
 - [ ] Bloccare le coordinate tra 0 e 100 (oggi puoi trascinare un tavolo fuori e perderlo)
+      → metà si risolve nella validazione della Server Action, metà nel trascinamento
 
 ---
 
