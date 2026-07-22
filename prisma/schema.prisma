@@ -8,9 +8,42 @@ datasource db {
 }
 
 model Tavolo {
-  id        String  @id @default(cuid())
-  numero    Int @unique
-  capienza  Int
-  posX      Float
-  posY      Float
+  id                   String @id @default(cuid())
+  numero               Int    @unique
+  capienza             Int
+  posX                 Float
+  posY                 Float
+  prenotazioni         Prenotazione[]
+  occupazioni          Occupazione[]
+}
+
+enum StatoPrenotazione {
+  IN_ATTESA
+  ANNULLATA
+  NON_PRESENTATA
+}
+
+model Prenotazione {
+  id                   String  @id @default(cuid())
+  nome                 String
+  telefono             String?
+  copertiPrenotati     Int
+  dataOra              DateTime
+  note                 String?
+  stato                StatoPrenotazione  @default(IN_ATTESA) 
+  tavolo               Tavolo? @relation(fields: [tavoloId], references: [id])
+  tavoloId             String? 
+  occupazioni          Occupazione?
+}
+
+model Occupazione {
+  id                   String       @id @default(cuid())
+  tavolo               Tavolo @relation(fields: [tavoloId], references: [id], onDelete: Restrict)
+  tavoloId             String
+  prenotazione         Prenotazione? @relation(fields: [prenotazioneId], references: [id])
+  prenotazioneId       String? @unique
+  copertiPresenti      Int
+  iniziataAlle         DateTime     @default(now())
+  terminataAlle        DateTime?
+  oraPagamento         DateTime?
 }

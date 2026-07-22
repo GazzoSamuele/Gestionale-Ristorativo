@@ -79,7 +79,17 @@ appartamenti dello stesso palazzo.
       ⚠️ Nel progetto vecchio l'identità della sala è **il percorso dell'SVG**
       (`/piantine-sale/piantina1.svg`): rinomini il file e perdi il legame con ogni tavolo.
       Serve un identificativo stabile. Se si aggiunge, `numero @unique` → `@@unique([numero, sala])`
-- [ ] Modelli `Prenotazione` e `Occupazione` (⚠️ entità **distinte** dal Tavolo) ← **prossimo passo**
+- [x] Modelli `Prenotazione` e `Occupazione` (migrazione `prenotazioni_e_occupazioni`)
+      — verificati in PostgreSQL: il walk-in regge (`prenotazioneId` nullable), l'uno-a-uno
+      regge (indice unico), lo storico è protetto (`ON DELETE RESTRICT` sul tavolo)
+
+### Cose note, non urgenti
+- `Prenotazione → Tavolo` è `ON DELETE SET NULL` (default Prisma, non scelto): cancelli un
+  tavolo → le prenotazioni sopravvivono senza tavolo. Comportamento giusto, ma è un default.
+- I `DateTime` finiscono in colonne `timestamp without time zone`: finché tutto passa da
+  Prisma è coerente, ma con l'ora legale andrà verificato quando si lavorerà sull'Agenda.
+- Nessun vincolo impedisce **due occupazioni aperte sullo stesso tavolo**: si gestisce nel
+  codice dell'azione "siedi".
 
 ### 2. 🔴 Il cambiamento strutturale
 Nel progetto vecchio lo stato del tavolo **non è un dato**: è dedotto dalla prenotazione
