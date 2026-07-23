@@ -47,3 +47,19 @@ model Occupazione {
   terminataAlle        DateTime?
   oraPagamento         DateTime?
 }
+
+model Piatto {
+  id                   String  @id @default(cuid())
+  nome                 String
+  prezzo               Decimal @db.Decimal(10, 2)
+  disponibile          Boolean @default(true)
+  categoria            Categoria @relation(fields: [categoriaId], references: [id], onDelete: Restrict)
+  categoriaId          String
+}
+
+model Categoria {
+  id                  String     @id @default(cuid())
+  nome                String
+  ordine              Int
+  piatti              Piatto[] 
+}
