@@ -5,8 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { prenotazioneSchema, type PrenotazioneForm, type PrenotazioneInput } from "../schema";
 import { creaPrenotazione } from "../actions";
+import type { Tavolo } from "@/generated/prisma/client";
 
-export default function FormPrenotazione() {
+export default function FormPrenotazione({ tavoli }: { tavoli: Tavolo[] }) {
   const {
     register,
     handleSubmit,
@@ -38,6 +39,18 @@ export default function FormPrenotazione() {
       <label>
         Telefono
         <input type="tel" {...register("telefono")} />
+      </label>
+
+      <label>
+        Tavolo
+        <select {...register("tavoloId")}>
+          <option value="">Nessun tavolo</option>
+          {tavoli.map((tavolo) => (
+            <option key={tavolo.id} value={tavolo.id}>
+              Tavolo {tavolo.numero}
+            </option>
+          ))}
+        </select>
       </label>
 
       <label>

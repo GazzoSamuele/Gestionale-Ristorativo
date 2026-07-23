@@ -7,7 +7,17 @@ import { spostaTavolo, occupaTavolo, liberaTavolo } from "./actions";
 import styles from "./page.module.scss";
 import TempoTrascorso from "./TempoTrascorso";
 
-export default function TavoloCard({ tavolo, occupato, occupazione }: { tavolo: Tavolo; occupato: boolean; occupazione?: Occupazione }) {
+type StatoTavolo = "libero" | "occupato" | "prenotato";
+
+export default function TavoloCard({ tavolo, stato, occupazione }: { tavolo: Tavolo; stato: StatoTavolo; occupazione?: Occupazione }) {
+
+  const classiStato: Record<StatoTavolo, string> = {
+    libero: styles.tavoloLibero,
+    occupato: styles.tavoloOccupato,
+    prenotato: styles.tavoloRiservato
+  };
+
+  const occupato = stato === "occupato";
 
   const [pos, setPos] = useState({ x: tavolo.posX, y: tavolo.posY });
 
@@ -83,7 +93,7 @@ export default function TavoloCard({ tavolo, occupato, occupazione }: { tavolo: 
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
-      className={`${styles.tavoloCard} ${occupato ? styles.tavoloOccupato : styles.tavoloLibero}`}
+      className={`${styles.tavoloCard} ${classiStato[stato]}`}
       style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
     >
       <h2>Tavolo {tavolo.numero}</h2>
@@ -93,7 +103,7 @@ export default function TavoloCard({ tavolo, occupato, occupazione }: { tavolo: 
       
       {occupazione && <TempoTrascorso da={occupazione.iniziataAlle} />}
       </div>
-    
+      
       {!occupato && (
       <div className={styles.azioniTavolo} onPointerDown={(e) => e.stopPropagation()}>
         <input
@@ -106,8 +116,14 @@ export default function TavoloCard({ tavolo, occupato, occupazione }: { tavolo: 
       </div>
     )}
     {occupato && (
-          <button className='btnLiberaTavolo' onClick={handleLibera}>Libera tavolo</button>
-        )}
+        <button
+          className={styles.btnLiberaTavolo}
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={handleLibera}
+        >
+          Libera tavolo
+        </button>
+      )}
     </div>
   );
 }
