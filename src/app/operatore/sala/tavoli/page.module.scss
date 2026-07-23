@@ -21,16 +21,16 @@ $sans: "Manrope", sans-serif;
 .sala {
   position: relative;
   aspect-ratio: 1205 / 805;
+  aspect-ratio: 1205 / 805;
+  max-height: 90vh;
+  margin-inline: auto;
   padding: 0;
-  border-radius: $radius;
   overflow: hidden;
   background-image: url("/piantine-sale/piantina1.svg");
   background-color: $espresso;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  box-shadow:
-    inset 0px 0px 0px 10px #3b2417,
-    inset 0 12px 0px 0px #3b2417;
+  width: 100%;
 
   &::after {
     content: "";
