@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { prenotazioneSchema, type PrenotazioneForm, type PrenotazioneInput } from "../schema";
 import { creaPrenotazione } from "../actions";
 import type { Tavolo } from "@/generated/prisma/client";
+import styles from "./FormPrenotazione.module.scss";
 
 export default function FormPrenotazione({ tavoli }: { tavoli: Tavolo[] }) {
   const {
@@ -29,48 +30,52 @@ export default function FormPrenotazione({ tavoli }: { tavoli: Tavolo[] }) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <label>
-        Nome
-        <input type="text" {...register("nome")} />
-      </label>
-      {errors.nome && <span>{errors.nome.message}</span>}
-
-      <label>
-        Telefono
-        <input type="tel" {...register("telefono")} />
+    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <label className={styles.campo}>
+        <span className={styles.etichetta}>Nome</span>
+        <input className={styles.input} type="text" {...register("nome")} />
+        {errors.nome && <span className={styles.errore}>{errors.nome.message}</span>}
       </label>
 
-      <label>
-        Tavolo
-        <select {...register("tavoloId")}>
-          <option value="">Nessun tavolo</option>
-          {tavoli.map((tavolo) => (
-            <option key={tavolo.id} value={tavolo.id}>
-              Tavolo {tavolo.numero}
-            </option>
-          ))}
-        </select>
+      <label className={styles.campo}>
+        <span className={styles.etichetta}>Telefono</span>
+        <input className={styles.input} type="tel" {...register("telefono")} />
       </label>
 
-      <label>
-        Coperti
-        <input type="number" min={1} {...register("copertiPrenotati")} />
-      </label>
-      {errors.copertiPrenotati && <span>{errors.copertiPrenotati.message}</span>}
+      <div className={styles.riga}>
+        <label className={styles.campo}>
+          <span className={styles.etichetta}>Tavolo</span>
+          <select className={styles.input} {...register("tavoloId")}>
+            <option value="">Nessun tavolo</option>
+            {tavoli.map((tavolo) => (
+              <option key={tavolo.id} value={tavolo.id}>
+                Tavolo {tavolo.numero}
+              </option>
+            ))}
+          </select>
+        </label>
 
-      <label>
-        Data e ora
-        <input type="datetime-local" {...register("dataOra")} />
-      </label>
-      {errors.dataOra && <span>{errors.dataOra.message}</span>}
+        <label className={styles.campo}>
+          <span className={styles.etichetta}>Coperti</span>
+          <input className={styles.input} type="number" min={1} {...register("copertiPrenotati")} />
+          {errors.copertiPrenotati && (
+            <span className={styles.errore}>{errors.copertiPrenotati.message}</span>
+          )}
+        </label>
+      </div>
 
-      <label>
-        Note
-        <textarea {...register("note")} />
+      <label className={styles.campo}>
+        <span className={styles.etichetta}>Data e ora</span>
+        <input className={styles.input} type="datetime-local" {...register("dataOra")} />
+        {errors.dataOra && <span className={styles.errore}>{errors.dataOra.message}</span>}
       </label>
 
-      <button type="submit" disabled={isSubmitting}>
+      <label className={styles.campo}>
+        <span className={styles.etichetta}>Note</span>
+        <textarea className={styles.textarea} {...register("note")} />
+      </label>
+
+      <button className={styles.bottone} type="submit" disabled={isSubmitting}>
         {isSubmitting ? "Salvataggio…" : "Crea prenotazione"}
       </button>
     </form>

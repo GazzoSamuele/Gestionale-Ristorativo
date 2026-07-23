@@ -1,0 +1,86 @@
+$espresso: #43291a;
+$cream: #f5ead6;
+$rosso: #c0392b;
+$muted: #8a7962;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.riga {
+  display: flex;
+  gap: 1rem;
+
+  .campo {
+    flex: 1;
+  }
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.etichetta {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $muted;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid rgba($espresso, 0.15);
+  border-radius: 10px;
+  background: #fff;
+  color: $espresso;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &:focus {
+    outline: none;
+    border-color: $rosso;
+    box-shadow: 0 0 0 3px rgba($rosso, 0.12);
+  }
+}
+
+.textarea {
+  min-height: 4.5rem;
+  resize: vertical;
+}
+
+.errore {
+  font-size: 0.8rem;
+  color: $rosso;
+  font-weight: 600;
+}
+
+.bottone {
+  margin-top: 0.4rem;
+  padding: 0.85rem 1.2rem;
+  border: none;
+  border-radius: 999px;
+  background: $rosso;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+
+  &:hover {
+    background: darken($rosso, 6%);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

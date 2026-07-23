@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import clsx from "clsx";
 import styles from "../style-layout.module.scss";
 import { voci } from "./navigazione";
 
@@ -20,7 +21,7 @@ export default function NavPrincipale() {
           <Link
             key={voce.href}
             href={voce.href}
-            className={`${styles.voce} ${attiva ? styles.voceAttiva : ""}`}
+            className={clsx(styles.voce, attiva && styles.voceAttiva)}
           >
             {voce.etichetta}
           </Link>

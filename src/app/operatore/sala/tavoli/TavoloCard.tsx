@@ -2,6 +2,7 @@
 
 import { useState, useRef, type PointerEvent } from "react";
 import { toast } from "sonner";
+import clsx from "clsx";
 import type { Tavolo, Occupazione } from "@/generated/prisma/client";
 import { spostaTavolo, occupaTavolo, liberaTavolo } from "./actions";
 import styles from "./page.module.scss";
@@ -93,7 +94,7 @@ export default function TavoloCard({ tavolo, stato, occupazione }: { tavolo: Tav
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
-      className={`${styles.tavoloCard} ${classiStato[stato]}`}
+      className={clsx(styles.tavoloCard, classiStato[stato])}
       style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
     >
       <h2>Tavolo {tavolo.numero}</h2>

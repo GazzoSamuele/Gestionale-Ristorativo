@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import clsx from "clsx";
 import { voci } from "./navigazione";
 import styles from "../style-layout.module.scss";
 
@@ -22,7 +23,7 @@ export default function SottoSchede() {
           <Link
             key={scheda.href}
             href={scheda.href}
-            className={`${styles.sottoscheda} ${attiva ? styles.sottoschedaAttiva : ""}`}
+            className={clsx(styles.sottoscheda, attiva && styles.sottoschedaAttiva)}
           >
             {scheda.etichetta}
           </Link>
