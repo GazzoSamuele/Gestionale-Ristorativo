@@ -1,3 +1,5 @@
-export default function Page() {
-  return <h1>Stato Tavoli</h1>;
+import CodaCucina from "../_components/CodaCucina";
+
+export default function CucinaSala() {
+  return <CodaCucina fonte="SALA" />;
 }
