@@ -40,6 +40,9 @@ async function main() {
     ]
   });
 
+  await prisma.presenza.deleteMany();
+  await prisma.utente.deleteMany();
+
   const marco = await prisma.utente.create({ data: { nome: "Marco Verdi" } });
   const sara = await prisma.utente.create({ data: { nome: "Sara Gialli" } });
   const alessandro = await prisma.utente.create({ data: { nome: "Alessandro Rossi" } });
@@ -69,8 +72,27 @@ async function main() {
     ]
   });
 
+  await prisma.premio.deleteMany();
+  await prisma.premio.createMany({
+    data: [
+      { nome: "Caffè omaggio", puntiRichiesti: 100 },
+      { nome: "Dolce della casa", puntiRichiesti: 250 },
+      { nome: "Sconto 15%", puntiRichiesti: 400 },
+      { nome: "Menu degustazione", puntiRichiesti: 800 }
+    ]
+  });
+
+  await prisma.cliente.deleteMany();
+  await prisma.cliente.createMany({
+    data: [
+      { nome: "Mario Rossi", telefono: "3401234567", primaVisita: new Date("2024-03-12"), visite: 14, punti: 340 },
+      { nome: "Anna Bianchi", telefono: "3487654321", primaVisita: new Date("2024-06-01"), visite: 6, punti: 120 },
+      { nome: "Luca Ferrari", telefono: null, primaVisita: new Date("2025-01-20"), visite: 2, punti: 40 }
+    ]
+  });
+
   console.log(
-    `Seed completato: ${tavoli.length} tavoli, 3 categorie, 6 piatti, 6 utenti, 2 presenze, 8 prodotti`
+    `Seed completato: ${tavoli.length} tavoli, 3 categorie, 6 piatti, 6 utenti, 2 presenze, 8 prodotti, 4 premi, 3 clienti`
   );
 }
 

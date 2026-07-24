@@ -1,0 +1,19 @@
+@use "../../../../styles/variabili" as v;
+
+.bottone {
+  padding: 0.7rem 1.3rem;
+  border: none;
+  border-radius: 999px;
+  background: v.$espresso;
+  color: v.$cream;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: opacity 0.15s;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}

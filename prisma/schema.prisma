@@ -139,3 +139,17 @@ model Prodotto {
   fornitore           String?
   immagine            String?
 }
+model Cliente {
+  id                  String   @id @default(cuid())
+  nome                String
+  telefono            String?
+  primaVisita         DateTime @default(now())
+  visite              Int      @default(0)
+  punti               Int      @default(0)
+}
+
+model Premio {
+  id                  String   @id @default(cuid())
+  nome                String
+  puntiRichiesti      Int
+}
