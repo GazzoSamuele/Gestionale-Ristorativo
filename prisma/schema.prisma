@@ -46,6 +46,7 @@ model Occupazione {
   iniziataAlle         DateTime     @default(now())
   terminataAlle        DateTime?
   oraPagamento         DateTime?
+  ordini               Ordine[]
 }
 
 model Piatto {
@@ -55,6 +56,7 @@ model Piatto {
   disponibile          Boolean @default(true)
   categoria            Categoria @relation(fields: [categoriaId], references: [id], onDelete: Restrict)
   categoriaId          String
+  righe                RigaOrdine[]
 }
 
 model Categoria {
@@ -62,4 +64,54 @@ model Categoria {
   nome                String
   ordine              Int
   piatti              Piatto[] 
+}
+
+enum FonteOrdine {
+  SALA
+  ASPORTO
+}
+
+enum StatoOrdine {
+  NUOVI_ARRIVATI
+  IN_CORSO
+  PRONTI
+}
+
+model Ordine {
+  id                   String  @id @default(cuid())
+  numero               Int  @default(autoincrement()) @unique
+  fonte                FonteOrdine  
+  stato                StatoOrdine @default(NUOVI_ARRIVATI)
+  creatoIl             DateTime @default(now())
+  statoDalle           DateTime @default(now())
+  nomeCliente          String?
+  occupazione          Occupazione? @relation(fields: [occupazioneId], references: [id])
+  occupazioneId        String?
+  righe                RigaOrdine[]
+  creatoDa             Utente? @relation(fields: [creatoDaId], references: [id])
+  creatoDaId           String?
+}
+
+model RigaOrdine {
+  id                  String @id @default(cuid())
+  piatto              Piatto @relation(fields: [piattoId], references: [id], onDelete: Restrict)
+  piattoId            String
+  ordine              Ordine @relation(fields: [ordineId], references: [id], onDelete: Cascade)
+  ordineId            String
+  quantita            Int @default(1)
+  prezzoUnitario      Decimal @db.Decimal(10,2)
+  note                String?
+}
+
+enum RuoloUtente {
+  OPERATORE
+  ADMIN
+  SUPER_ADMIN
+}
+
+model Utente {
+  id                  String     @id @default(cuid())
+  nome                String
+  ruolo               RuoloUtente @default(OPERATORE)
+  ordini         Ordine[]
 }
