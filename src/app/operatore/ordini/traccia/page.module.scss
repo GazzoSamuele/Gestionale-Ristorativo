@@ -1,0 +1,92 @@
+@use "../../../../styles/variabili" as v;
+
+.pagina {
+  padding: 1.5rem;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.titolo {
+  margin: 0 0 1.4rem;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: v.$espresso;
+}
+
+.colonne {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.2rem;
+  align-items: start;
+}
+
+.colonna {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.testata {
+  padding: 0.6rem 1rem;
+  border-radius: v.$radius-sm;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.NUOVI_ARRIVATI {
+  background: #dce8f0;
+  color: v.$blu;
+}
+
+.IN_CORSO {
+  background: v.$cream-scuro;
+  color: v.$giallo;
+}
+
+.PRONTI {
+  background: #dfe9df;
+  color: v.$verde;
+}
+
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.ordine {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1rem 1.1rem;
+  border-radius: v.$radius;
+  background: v.$panna;
+  box-shadow: v.$ombra;
+}
+
+.cliente {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: v.$espresso;
+}
+
+.meta {
+  margin: 0;
+  font-size: 0.85rem;
+  color: v.$muted;
+}
+
+.vuoto {
+  margin: 0;
+  padding: 0.8rem;
+  font-size: 0.85rem;
+  color: v.$muted;
+  font-style: italic;
+  text-align: center;
+}

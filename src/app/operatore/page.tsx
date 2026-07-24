@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { startOfDay } from "date-fns";
 import { endOfDay } from "date-fns";
+import styles from "./page.module.scss";
 
 export default async function HomeOperatore() {
     const oggi = new Date();
@@ -63,7 +64,7 @@ export default async function HomeOperatore() {
         href: "/operatore/ordini/traccia"
       },
       {
-        titolo: "Prentazioni",
+        titolo: "Prenotazioni",
         valore: `${prenOggi}`,
         etichetta: "stasera",
         badge: inRitardo > 0 ? `${inRitardo} in ritardo` : null,
@@ -79,14 +80,14 @@ export default async function HomeOperatore() {
     ];
     
     return (
-       <section>
-            <div>
+       <section className={styles.pagina}>
+            <div className={styles.griglia}>
                 {card.map((scheda) => (
-                    <Link key={scheda.titolo} href={scheda.href}>
-                        <h2>{scheda.titolo}</h2>
-                        <p>{scheda.valore}</p>
-                        <p>{scheda.etichetta}</p>
-                        {scheda.badge && <span>{scheda.badge}</span>}
+                    <Link key={scheda.titolo} href={scheda.href} className={styles.scheda}>
+                        <h2 className={styles.titolo}>{scheda.titolo}</h2>
+                        <p className={styles.valore}>{scheda.valore}</p>
+                        <p className={styles.etichetta}>{scheda.etichetta}</p>
+                        {scheda.badge && <span className={styles.badge}>{scheda.badge}</span>}
                     </Link>
                 ))}
             </div>

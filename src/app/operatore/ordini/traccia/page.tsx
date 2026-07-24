@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
+import clsx from "clsx";
 import TempoTrascorso from "@/app/operatore/sala/tavoli/TempoTrascorso";
 import PulsanteAvanza from "../_components/PulsanteAvanza";
+import styles from "./page.module.scss";
 
 const colonne =  [ 
     { stato: "NUOVI_ARRIVATI", etichetta: "Nuovi arrivati" },
@@ -22,36 +24,38 @@ export default async function Traccia() {
   });
 
   return (
-    <section>
-      <h1>Gestione ordini</h1>
+    <section className={styles.pagina}>
+      <h1 className={styles.titolo}>Gestione ordini</h1>
 
-      <div>
+      <div className={styles.colonne}>
         {colonne.map((colonna) => {
           const ordiniColonna = ordini.filter((ordine) => ordine.stato === colonna.stato);
 
           return (
-            <div key={colonna.stato}>
-              <h2>{colonna.etichetta}</h2>
+            <div key={colonna.stato} className={styles.colonna}>
+              <h2 className={clsx(styles.testata, styles[colonna.stato])}>
+                {colonna.etichetta}
+              </h2>
 
-              <ul>
+              <ul className={styles.lista}>
                 {ordiniColonna.map((ordine) => (
-                  <li key={ordine.id}>
-                    <strong>
+                  <li key={ordine.id} className={styles.ordine}>
+                    <strong className={styles.cliente}>
                       {ordine.occupazione
                         ? `Tavolo ${ordine.occupazione.tavolo.numero}`
                         : ordine.nomeCliente}
                     </strong>
-                    <p>
+                    <p className={styles.meta}>
                       #{ordine.numero} · {ordine.fonte} · {ordine.righe.length} piatti
                     </p>
                     <TempoTrascorso da={ordine.statoDalle} />
 
-                     <PulsanteAvanza ordineId={ordine.id}/>
+                    <PulsanteAvanza ordineId={ordine.id} />
                   </li>
                 ))}
               </ul>
 
-              {ordiniColonna.length === 0 && <p>Nessun ordine</p>}
+              {ordiniColonna.length === 0 && <p className={styles.vuoto}>Nessun ordine</p>}
             </div>
           );
         })}

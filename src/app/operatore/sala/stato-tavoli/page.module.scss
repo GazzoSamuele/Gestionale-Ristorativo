@@ -1,0 +1,135 @@
+@use "../../../../styles/variabili" as v;
+
+.pagina {
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.intestazione {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+
+.titolo {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: v.$espresso;
+}
+
+.contatori {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.contatore {
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  background: v.$panna;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: v.$espresso;
+}
+
+.griglia {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.scheda {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.1rem 1.2rem;
+  border-radius: v.$radius;
+  background: v.$panna;
+  box-shadow: v.$ombra;
+  min-height: 130px;
+}
+
+.occupato {
+  background: v.$espresso;
+  color: v.$cream;
+
+  .numero,
+  .dettaglio {
+    color: v.$cream;
+  }
+}
+
+.prenotato {
+  background: #eaf1f6;
+  border: 1px solid rgba(v.$blu, 0.35);
+}
+
+.libero {
+  background: transparent;
+  border: 1px dashed rgba(v.$espresso, 0.25);
+  box-shadow: none;
+}
+
+.riga {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.numero {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: v.$espresso;
+}
+
+.stato {
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.statoOccupato {
+  background: rgba(v.$cream, 0.2);
+  color: v.$cream;
+}
+
+.statoPrenotato {
+  background: v.$blu;
+  color: #fff;
+}
+
+.statoLibero {
+  background: rgba(v.$espresso, 0.08);
+  color: v.$muted;
+}
+
+.dettaglio {
+  margin: 0;
+  font-size: 0.95rem;
+  color: v.$espresso;
+}
+
+.attesa {
+  color: v.$blu;
+  font-weight: 700;
+}
+
+.vuotoTavolo {
+  margin: 0;
+  font-size: 0.9rem;
+  color: v.$muted;
+}
+
+.vuoto {
+  color: v.$muted;
+  font-style: italic;
+}

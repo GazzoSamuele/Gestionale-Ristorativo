@@ -21,6 +21,7 @@ async function main() {
     });
   }
 
+  await prisma.ordine.deleteMany();
   await prisma.piatto.deleteMany();
   await prisma.categoria.deleteMany();
 
@@ -39,7 +40,38 @@ async function main() {
     ]
   });
 
-  console.log(`Seed completato: ${tavoli.length} tavoli, 3 categorie, 6 piatti.`);
+  const marco = await prisma.utente.create({ data: { nome: "Marco Verdi" } });
+  const sara = await prisma.utente.create({ data: { nome: "Sara Gialli" } });
+  const alessandro = await prisma.utente.create({ data: { nome: "Alessandro Rossi" } });
+  const simone = await prisma.utente.create({ data: { nome: "Simone Neri" } });
+  const fabio = await prisma.utente.create({ data: { nome: "Fabio Aranci" } });
+  const alessia = await prisma.utente.create({ data: { nome: "Alessia Azzurri" } });
+
+  await prisma.presenza.createMany({
+    data: [
+      { utenteId: marco.id },
+      { utenteId: sara.id }
+    ]
+  });
+
+  await prisma.prodotto.deleteMany();
+
+  await prisma.prodotto.createMany({
+    data: [
+      { nome: "Guanciale", quantita: 10, limiteMinimo: 15, unita: "KG", fornitore: "RomaTravel" },
+      { nome: "Pecorino romano", quantita: 2, limiteMinimo: 8, unita: "KG", fornitore: "Caseificio Aurelio" },
+      { nome: "Pomodoro pelato", quantita: 6, limiteMinimo: 20, unita: "KG", fornitore: "OrtoSud" },
+      { nome: "Spaghetti", quantita: 18, limiteMinimo: 20, unita: "KG", fornitore: "Pastificio Conti" },
+      { nome: "Olio extravergine", quantita: 12, limiteMinimo: 10, unita: "L", fornitore: "Frantoio Verde" },
+      { nome: "Uova", quantita: 180, limiteMinimo: 120, unita: "PZ", fornitore: "Cascina Bianca" },
+      { nome: "Vino rosso della casa", quantita: 45, limiteMinimo: 24, unita: "L", fornitore: "Cantina Lupo" },
+      { nome: "Farina 00", quantita: 60, limiteMinimo: 25, unita: "KG", fornitore: "Molino Sereni" }
+    ]
+  });
+
+  console.log(
+    `Seed completato: ${tavoli.length} tavoli, 3 categorie, 6 piatti, 6 utenti, 2 presenze, 8 prodotti`
+  );
 }
 
 main()

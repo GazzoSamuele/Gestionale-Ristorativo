@@ -1,0 +1,65 @@
+@use "../../styles/variabili" as v;
+
+.pagina {
+  padding: 1.5rem;
+}
+
+.griglia {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.scheda {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 220px;
+  padding: 1.8rem 1.4rem;
+  background: v.$panna;
+  border-radius: 22px;
+  box-shadow: v.$ombra;
+  text-align: center;
+  transition: transform 0.15s, box-shadow 0.15s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.titolo {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: v.$espresso;
+}
+
+.valore {
+  margin: 0.6rem 0 0;
+  font-size: 3.4rem;
+  font-weight: 800;
+  line-height: 1;
+  color: v.$espresso;
+  font-variant-numeric: tabular-nums;
+}
+
+.etichetta {
+  margin: 0;
+  font-size: 0.95rem;
+  color: v.$muted;
+}
+
+.badge {
+  margin-top: 0.6rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  background: v.$rosso;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}

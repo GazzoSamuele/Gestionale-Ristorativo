@@ -1,7 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { startOfDay, endOfDay, format } from "date-fns";
 import { it } from "date-fns/locale";
+import clsx from "clsx";
 import TempoTrascorso from "../tavoli/TempoTrascorso";
+import styles from "./page.module.scss";
 
 export default async function StatoTavoliPage() {
   const oggi = new Date();
@@ -41,49 +43,71 @@ export default async function StatoTavoliPage() {
   const prenotati = schede.filter((s) => s.stato === "prenotato").length;
 
   return (
-    <section>
-      <header>
-        <h1>Stato tavoli</h1>
-        <p>
-          Totali {schede.length} · Liberi {liberi} · Occupati {occupati} · Prenotati {prenotati}
-        </p>
+    <section className={styles.pagina}>
+      <header className={styles.intestazione}>
+        <h1 className={styles.titolo}>Stato tavoli</h1>
+        <div className={styles.contatori}>
+          <span className={styles.contatore}>Totali {schede.length}</span>
+          <span className={styles.contatore}>Liberi {liberi}</span>
+          <span className={styles.contatore}>Occupati {occupati}</span>
+          <span className={styles.contatore}>Prenotati {prenotati}</span>
+        </div>
       </header>
 
-      <div>
+      <div className={styles.griglia}>
         {schede.map(({ tavolo, occupazione, prenotazione, stato }) => (
-          <article key={tavolo.id}>
-            <h2>T{tavolo.numero}</h2>
-            <span>{stato}</span>
+          <article key={tavolo.id} className={clsx(styles.scheda, styles[stato])}>
+            <div className={styles.riga}>
+              <h2 className={styles.numero}>T{tavolo.numero}</h2>
+              <span
+                className={clsx(
+                  styles.stato,
+                  stato === "occupato" && styles.statoOccupato,
+                  stato === "prenotato" && styles.statoPrenotato,
+                  stato === "libero" && styles.statoLibero
+                )}
+              >
+                {stato}
+              </span>
+            </div>
 
             {stato === "occupato" && occupazione && (
               <>
-                <p>
+                <p className={styles.dettaglio}>
                   {occupazione.prenotazione
                     ? `${occupazione.prenotazione.nome} · ${format(occupazione.prenotazione.dataOra, "HH:mm", { locale: it })}`
                     : "Walk-in"}
                 </p>
-                <p>
-                  {occupazione.copertiPresenti}/{tavolo.capienza} coperti
-                </p>
-                <TempoTrascorso da={occupazione.iniziataAlle} />
+                <div className={styles.riga}>
+                  <p className={styles.dettaglio}>
+                    {occupazione.copertiPresenti}/{tavolo.capienza} coperti
+                  </p>
+                  <TempoTrascorso da={occupazione.iniziataAlle} />
+                </div>
               </>
             )}
 
             {stato === "prenotato" && prenotazione && (
               <>
-                <p>
+                <p className={styles.dettaglio}>
                   {prenotazione.nome} · {format(prenotazione.dataOra, "HH:mm", { locale: it })}
                 </p>
-                <p>atteso · {prenotazione.copertiPrenotati} coperti</p>
+                <p className={styles.attesa}>
+                  atteso · {prenotazione.copertiPrenotati} coperti
+                </p>
               </>
             )}
 
-            {stato === "libero" && <p>{tavolo.capienza} coperti · tocca per sedere</p>}
+            {stato === "libero" && (
+              <p className={styles.vuotoTavolo}>
+                {tavolo.capienza} coperti · tocca per sedere
+              </p>
+            )}
           </article>
         ))}
       </div>
 
-      {schede.length === 0 && <p>Nessun tavolo in questa sala.</p>}
+      {schede.length === 0 && <p className={styles.vuoto}>Nessun tavolo in questa sala.</p>}
     </section>
   );
 }

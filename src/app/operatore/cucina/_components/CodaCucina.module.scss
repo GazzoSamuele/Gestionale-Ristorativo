@@ -1,0 +1,70 @@
+@use "../../../../styles/variabili" as v;
+
+.coda {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.2rem;
+  padding: 1.5rem;
+  align-items: start;
+}
+
+.ticket {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1.3rem;
+  border-radius: 20px;
+  background: v.$panna;
+  box-shadow: v.$ombra;
+  min-height: 260px;
+}
+
+.testata {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid rgba(v.$espresso, 0.12);
+}
+
+.cliente {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: v.$espresso;
+}
+
+.righe {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 1;
+}
+
+.riga {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+}
+
+.quantita {
+  min-width: 2rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: v.$rosso;
+  font-variant-numeric: tabular-nums;
+}
+
+.piatto {
+  font-size: 1.05rem;
+  color: v.$espresso;
+}
+
+.vuoto {
+  padding: 1.5rem;
+  color: v.$muted;
+  font-style: italic;
+}
