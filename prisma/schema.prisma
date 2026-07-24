@@ -113,5 +113,29 @@ model Utente {
   id                  String     @id @default(cuid())
   nome                String
   ruolo               RuoloUtente @default(OPERATORE)
-  ordini         Ordine[]
+  ordini              Ordine[]
+  presenze            Presenza[]
+}
+
+model Presenza {
+  id                  String     @id @default(cuid())
+  utente              Utente @relation(fields: [utenteId], references: [id], onDelete: Cascade)
+  utenteId            String
+  arrivoAlle          DateTime @default(now())
+}
+
+enum UnitaMisura {
+  KG
+  L
+  PZ
+}
+
+model Prodotto {
+  id                  String     @id @default(cuid())
+  nome                String
+  quantita            Decimal @db.Decimal(10,2)
+  limiteMinimo        Decimal @db.Decimal(10,2)
+  unita               UnitaMisura
+  fornitore           String?
+  immagine            String?
 }
