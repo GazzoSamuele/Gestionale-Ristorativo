@@ -4,6 +4,12 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { ordineSchema } from "./schema";
 
+const prossimoStato = {
+  NUOVI_ARRIVATI: "IN_CORSO",
+  IN_CORSO: "PRONTI",
+  PRONTI: null
+} as const;
+
 export async function creaOrdine(input: unknown) {
   const controllo = ordineSchema.safeParse(input);
 
@@ -53,7 +59,7 @@ export async function creaOrdine(input: unknown) {
       prezzoUnitario: prezzo
     });
   }
-
+  
   await prisma.ordine.create({
     data: {
       fonte,
@@ -63,6 +69,31 @@ export async function creaOrdine(input: unknown) {
         create: righeDaCreare
       }
     }
+  });
+
+  revalidatePath("/operatore/ordini/traccia");
+
+  return { ok: true as const };
+}
+
+export async function avanzaOrdine(ordineId: string) {
+  const ordine = await prisma.ordine.findUnique({
+    where: { id: ordineId }
+  });
+
+  if (!ordine) {
+    return { ok: false as const, errore: "Ordine non trovato" };
+  }
+
+  const prossimo = prossimoStato[ordine.stato];
+
+  if (!prossimo) {
+    return { ok: false as const, errore: "L'ordine è già pronto" };
+  }
+
+  await prisma.ordine.update({
+    where: { id: ordine.id },
+    data: { stato: prossimo, statoDalle: new Date() }
   });
 
   revalidatePath("/operatore/ordini/traccia");

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import TempoTrascorso from "@/app/operatore/sala/tavoli/TempoTrascorso";
+import PulsanteAvanza from "../_components/PulsanteAvanza";
 
 const colonne =  [ 
     { stato: "NUOVI_ARRIVATI", etichetta: "Nuovi arrivati" },
@@ -44,6 +45,8 @@ export default async function Traccia() {
                       #{ordine.numero} · {ordine.fonte} · {ordine.righe.length} piatti
                     </p>
                     <TempoTrascorso da={ordine.statoDalle} />
+
+                     <PulsanteAvanza ordineId={ordine.id}/>
                   </li>
                 ))}
               </ul>
