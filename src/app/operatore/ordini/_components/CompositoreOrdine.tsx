@@ -1,16 +1,19 @@
 'use client'
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import clsx from "clsx";
 import { creaOrdine } from "../actions";
 import styles from "./CompositoreOrdine.module.scss";
+import { Occupazione } from "@/generated/prisma/client";
 
 type Piatto = { id: string; nome: string; prezzo: string };
 type Categoria = { id: string; nome: string; piatti: Piatto[] };
 type RigaCarrello = Piatto & { quantita: number };
 
-export default function CompositoreOrdine({ categorie }: { categorie: Categoria[] }) {
+export default function CompositoreOrdine({ categorie , fonte, occupazioneId }: { categorie: Categoria[]; fonte : "SALA" | "ASPORTO"; occupazioneId?: string; }) {
+  const router = useRouter();
   const [filtro, setFiltro] = useState<string | null>(null);
   const [carrello, setCarrello] = useState<RigaCarrello[]>([]);
   const [nomeCliente, setNomeCliente] = useState("");
@@ -47,8 +50,8 @@ export default function CompositoreOrdine({ categorie }: { categorie: Categoria[
     setInvio(true);
 
     const esito = await creaOrdine({
-      fonte: "ASPORTO",
-      nomeCliente,
+      fonte,
+      ...(fonte === "SALA" ? { occupazioneId } : { nomeCliente }),
       righe: carrello.map((riga) => ({ piattoId: riga.id, quantita: riga.quantita }))
     });
 
@@ -56,8 +59,12 @@ export default function CompositoreOrdine({ categorie }: { categorie: Categoria[
 
     if (esito.ok) {
       toast.success("Ordine mandato in cucina");
-      setCarrello([]);
-      setNomeCliente("");
+      if (fonte === "SALA") {
+        router.push("/operatore/sala/tavoli");
+      } else {
+        setCarrello([]);
+        setNomeCliente("");
+      }
     } else {
       toast.error(esito.errore);
     }
@@ -112,8 +119,9 @@ export default function CompositoreOrdine({ categorie }: { categorie: Categoria[
       </div>
 
       <aside className={styles.carrello}>
-        <h2 className={styles.titoloCarrello}>Asporto</h2>
+        <h2 className={styles.titoloCarrello}>{fonte === "SALA" ? "Ordine al tavolo" : "Asporto"}</h2>
 
+        {fonte === "ASPORTO" && (
         <input
           type="text"
           className={styles.campoNome}
@@ -121,7 +129,7 @@ export default function CompositoreOrdine({ categorie }: { categorie: Categoria[
           value={nomeCliente}
           onChange={(e) => setNomeCliente(e.target.value)}
         />
-
+        )}
         <ul className={styles.righe}>
           {carrello.map((riga) => (
             <li key={riga.id} className={styles.riga}>
@@ -155,7 +163,7 @@ export default function CompositoreOrdine({ categorie }: { categorie: Categoria[
           type="button"
           className={styles.invia}
           onClick={mandaInCucina}
-          disabled={invio || carrello.length === 0 || !nomeCliente.trim()}
+          disabled={invio || carrello.length === 0 || (fonte === "ASPORTO" && !nomeCliente.trim())}
         >
           {invio ? "Invio…" : "Manda in cucina"}
         </button>

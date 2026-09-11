@@ -22,5 +22,5 @@ export default async function CreaAsportoPage() {
     }))
   }));
 
-  return <CompositoreOrdine categorie={dati} />;
+  return <CompositoreOrdine categorie={dati} fonte="ASPORTO" />;
 }

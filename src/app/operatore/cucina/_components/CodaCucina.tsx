@@ -31,6 +31,8 @@ export default async function CodaCucina({ fonte }: { fonte: "SALA" | "ASPORTO" 
               <li key={riga.id} className={styles.riga}>
                 <span className={styles.quantita}>{riga.quantita}×</span>
                 <span className={styles.piatto}>{riga.piatto.nome}</span>
+
+                {riga.note && <p className={styles.nota}>{riga.note}</p>}
               </li>
             ))}
           </ul>

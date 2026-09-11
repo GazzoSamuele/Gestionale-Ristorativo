@@ -7,6 +7,7 @@ import type { Tavolo, Occupazione } from "@/generated/prisma/client";
 import { spostaTavolo, occupaTavolo, liberaTavolo } from "./actions";
 import styles from "./page.module.scss";
 import TempoTrascorso from "./TempoTrascorso";
+import Link from "next/link";
 
 type StatoTavolo = "libero" | "occupato" | "prenotato";
 
@@ -66,8 +67,8 @@ export default function TavoloCard({ tavolo, stato, occupazione }: { tavolo: Tav
     const dyPct = ((e.clientY - dragStart.current.mouseY) / rect.height) * 100;
 
     setPos({
-      x: dragStart.current.posX + dxPct,
-      y: dragStart.current.posY + dyPct
+      x: Math.max(0, Math.min(100, dragStart.current.posX + dxPct)),
+      y: Math.max(0, Math.min(100, dragStart.current.posY + dyPct))
     });
   };
 
@@ -117,13 +118,22 @@ export default function TavoloCard({ tavolo, stato, occupazione }: { tavolo: Tav
       </div>
     )}
     {occupato && (
-        <button
-          className={styles.btnLiberaTavolo}
-          onPointerDown={(e) => e.stopPropagation()}
-          onClick={handleLibera}
-        >
-          Libera tavolo
-        </button>
+        <>
+          <button
+            className={styles.btnLiberaTavolo}
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={handleLibera}
+          >
+            Libera tavolo
+          </button>
+
+          <Link
+            href={`/operatore/sala/tavoli/${tavolo.id}/ordina`}
+            onPointerDown={(e) => e.stopPropagation()}
+          >
+            Ordina
+          </Link>
+        </>
       )}
     </div>
   );

@@ -72,6 +72,9 @@ export async function creaOrdine(input: unknown) {
   });
 
   revalidatePath("/operatore/ordini/traccia");
+  revalidatePath("/operatore/cucina/sala");
+  revalidatePath("/operatore/cucina/asporti");
+  revalidatePath("/operatore/sala/tavoli");
 
   return { ok: true as const };
 }

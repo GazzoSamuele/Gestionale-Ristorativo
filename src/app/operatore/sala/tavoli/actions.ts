@@ -88,7 +88,10 @@ export async function liberaTavolo(input: { tavoloId: string }) {
 
   await prisma.occupazione.update({
     where: { id: occupazione.id },
-    data: { terminataAlle: new Date() }
+    data: { 
+      terminataAlle: new Date(), 
+      oraPagamento: new Date()
+    }
   });
 
   revalidatePath("/operatore/sala/tavoli");
