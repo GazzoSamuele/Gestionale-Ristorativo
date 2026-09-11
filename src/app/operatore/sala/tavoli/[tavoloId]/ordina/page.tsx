@@ -43,6 +43,7 @@ export default async function OrdinaTavoloPage({
       categorie={dati}
       fonte="SALA"
       occupazioneId={occupazione.id}
+      numeroTavolo={occupazione.tavolo.numero}
     />
   );
 }

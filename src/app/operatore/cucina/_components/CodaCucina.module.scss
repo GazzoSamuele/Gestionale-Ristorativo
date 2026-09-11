@@ -34,6 +34,20 @@
   color: v.$espresso;
 }
 
+.tempi {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.1rem;
+  flex: none;
+}
+
+.oraInvio {
+  font-size: 0.8rem;
+  color: v.$muted;
+  font-variant-numeric: tabular-nums;
+}
+
 .righe {
   list-style: none;
   margin: 0;
@@ -47,7 +61,8 @@
 .riga {
   display: flex;
   align-items: baseline;
-  gap: 0.9rem;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.9rem;
 }
 
 .quantita {
@@ -69,8 +84,12 @@
   font-style: italic;
 }
 .nota {
-  padding: 1.5rem;
-  color: v.$muted;
-  font-style: italic;
-  border: 1px solid rgba(v.$espresso, 0.12);
+  flex-basis: 100%;
+  margin: 0;
+  padding: 0.4rem 0.6rem;
+  border-left: 3px solid v.$rosso;
+  background: rgba(v.$rosso, 0.08);
+  color: v.$rosso;
+  font-size: 0.85rem;
+  font-weight: 700;
 }

@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { prisma } from "@/lib/prisma";
 import TempoTrascorso from "../../sala/tavoli/TempoTrascorso";
 import PulsanteAvanza from "../../ordini/_components/PulsanteAvanza";
@@ -23,7 +24,10 @@ export default async function CodaCucina({ fonte }: { fonte: "SALA" | "ASPORTO" 
                 ? `Tavolo ${ordine.occupazione.tavolo.numero}`
                 : ordine.nomeCliente}
             </strong>
-            <TempoTrascorso da={ordine.statoDalle} />
+            <span className={styles.tempi}>
+              <TempoTrascorso da={ordine.statoDalle} />
+              <span className={styles.oraInvio}>inviato {format(ordine.creatoIl, "HH:mm")}</span>
+            </span>
           </div>
 
           <ul className={styles.righe}>

@@ -91,8 +91,15 @@ async function main() {
     ]
   });
 
+    await prisma.segnalazione.createMany({
+    data: [
+      { testo: "Abbiamo aspettato 30 minuti prima di ordinare", utenteId: marco.id, creatoIl: new Date("2024-03-18"), letta: true },
+      { testo: "I camerieri sono freddi e il servizio è stato lento", utenteId: sara.id, creatoIl: new Date("2024-03-18"), letta: false }
+    ]
+  });
+
   console.log(
-    `Seed completato: ${tavoli.length} tavoli, 3 categorie, 6 piatti, 6 utenti, 2 presenze, 8 prodotti, 4 premi, 3 clienti`
+    `Seed completato: ${tavoli.length} tavoli, 3 categorie, 6 piatti, 6 utenti, 2 presenze, 8 prodotti, 4 premi, 3 clienti, 2 segnalazioni`
   );
 }
 

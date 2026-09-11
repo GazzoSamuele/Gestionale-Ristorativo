@@ -119,6 +119,14 @@ export default function TavoloCard({ tavolo, stato, occupazione }: { tavolo: Tav
     )}
     {occupato && (
         <>
+          <Link
+            className={styles.btnOrdina}
+            href={`/operatore/sala/tavoli/${tavolo.id}/ordina`}
+            onPointerDown={(e) => e.stopPropagation()}
+          >
+            Ordina
+          </Link>
+
           <button
             className={styles.btnLiberaTavolo}
             onPointerDown={(e) => e.stopPropagation()}
@@ -126,13 +134,6 @@ export default function TavoloCard({ tavolo, stato, occupazione }: { tavolo: Tav
           >
             Libera tavolo
           </button>
-
-          <Link
-            href={`/operatore/sala/tavoli/${tavolo.id}/ordina`}
-            onPointerDown={(e) => e.stopPropagation()}
-          >
-            Ordina
-          </Link>
         </>
       )}
     </div>

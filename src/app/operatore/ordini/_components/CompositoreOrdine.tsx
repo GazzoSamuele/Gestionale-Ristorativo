@@ -12,7 +12,7 @@ type Piatto = { id: string; nome: string; prezzo: string };
 type Categoria = { id: string; nome: string; piatti: Piatto[] };
 type RigaCarrello = Piatto & { quantita: number };
 
-export default function CompositoreOrdine({ categorie , fonte, occupazioneId }: { categorie: Categoria[]; fonte : "SALA" | "ASPORTO"; occupazioneId?: string; }) {
+export default function CompositoreOrdine({ categorie , fonte, occupazioneId, numeroTavolo }: { categorie: Categoria[]; fonte : "SALA" | "ASPORTO"; occupazioneId?: string; numeroTavolo?: number; }) {
   const router = useRouter();
   const [filtro, setFiltro] = useState<string | null>(null);
   const [carrello, setCarrello] = useState<RigaCarrello[]>([]);
@@ -119,7 +119,9 @@ export default function CompositoreOrdine({ categorie , fonte, occupazioneId }: 
       </div>
 
       <aside className={styles.carrello}>
-        <h2 className={styles.titoloCarrello}>{fonte === "SALA" ? "Ordine al tavolo" : "Asporto"}</h2>
+        <h2 className={styles.titoloCarrello}>
+          {fonte === "SALA" ? (numeroTavolo ? `Tavolo ${numeroTavolo}` : "Ordine al tavolo") : "Asporto"}
+        </h2>
 
         {fonte === "ASPORTO" && (
         <input

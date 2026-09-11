@@ -115,6 +115,7 @@ model Utente {
   ruolo               RuoloUtente @default(OPERATORE)
   ordini              Ordine[]
   presenze            Presenza[]
+  segnalazioni        Segnalazione[]
 }
 
 model Presenza {
@@ -152,4 +153,13 @@ model Premio {
   id                  String   @id @default(cuid())
   nome                String
   puntiRichiesti      Int
+}
+
+model Segnalazione {
+  id                  String    @id @default(cuid())
+  testo               String
+  utente              Utente @relation(fields: [utenteId], references: [id], onDelete: Cascade)
+  utenteId            String
+  creatoIl            DateTime  @default(now())
+  letta               Boolean   @default(false)
 }
