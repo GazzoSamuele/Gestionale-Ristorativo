@@ -1,0 +1,32 @@
+'use client'
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import clsx from "clsx";
+import styles from "../style-layout.module.scss";
+import { voci } from "./navigazione";
+
+export default function NavPrincipale() {
+  const pathname = usePathname();
+
+  return (
+    <nav className={styles.navPrincipale}>
+      {voci.map((voce) => {
+        const attiva =
+          voce.sezione === "/titolare"
+            ? pathname === "/titolare"
+            : pathname.startsWith(voce.sezione);
+
+        return (
+          <Link
+            key={voce.href}
+            href={voce.href}
+            className={clsx(styles.voce, attiva && styles.voceAttiva)}
+          >
+            {voce.etichetta}
+          </Link>
+        );
+      })}
+    </nav>
+  );
+}

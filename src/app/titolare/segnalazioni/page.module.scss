@@ -1,0 +1,54 @@
+@use "../../../styles/variabili" as v;
+
+.elenco {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(750px, 1fr));
+  gap: 1.2rem;
+  padding: 1.5rem;
+  align-items: start;
+}
+
+.dispSegnalazioni{
+    display: flex;
+    justify-content: space-between;
+}
+.segnalazione {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1.3rem;
+  border-radius: 20px;
+  background: v.$panna;
+  box-shadow: v.$ombra;
+  min-height: 260px;
+}
+
+.nome {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: v.$espresso;
+}
+
+.idSegnalazione {
+  min-width: 2rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: v.$rosso;
+  font-variant-numeric: tabular-nums;
+}
+.vuoto {
+  padding: 1.5rem;
+  color: v.$muted;
+  font-style: italic;
+}
+.nota {
+  flex-basis: 100%;
+  margin: 0;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+}
+.nonLetta{
+  border-left: 3px solid v.$rosso;
+  background: rgba(v.$rosso, 0.08);
+  color: v.$rosso;
+}
