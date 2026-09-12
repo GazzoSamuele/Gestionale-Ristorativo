@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import clsx from "clsx";
 import styles from "./page.module.scss";
 import PulsanteToggle from "./_components/PulsanteToggle";
+import FormPiatto from "./_components/FormPiatto";
 
 export default async function Menu() {
   const categorie = await prisma.categoria.findMany({
@@ -13,6 +14,11 @@ export default async function Menu() {
     }
   });
   
+  const categorieForm = categorie.map((categoria) => ({
+    id: categoria.id,
+    nome: categoria.nome
+  }));
+
   return (
     <section className={styles.pagina}>
       <div className={styles.card}>
@@ -20,6 +26,8 @@ export default async function Menu() {
           <h1 className={styles.titolo}>Menu</h1>
           <span className={styles.badge}>Gestione menu</span>
         </header>
+
+        <FormPiatto categorie={categorieForm} />
 
         <div className={styles.categorie}>
           {categorie.map((categoria) => (
