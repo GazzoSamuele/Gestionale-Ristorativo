@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { subDays } from "date-fns";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -40,6 +41,29 @@ async function main() {
     ]
   });
 
+  const ricercaPiatti = await prisma.piatto.findMany();
+  const numeri = [2,1,7,4,3,5,6,4,3,2,6,1,7,4];
+
+  for (let i = 0; i < 14; i++) {
+    const giorno =  subDays(new Date(), i);
+      for (let j = 0; j < numeri[i]; j++) {
+        const piatto = ricercaPiatti[j % ricercaPiatti.length]
+         await prisma.ordine.create({
+          data: {                        
+            nomeCliente: "Sara",
+            creatoIl: giorno,
+            stato: "PRONTI",
+            fonte: "ASPORTO",
+            righe: {
+              create: [
+                { piattoId: piatto.id, quantita: 2, prezzoUnitario: piatto.prezzo }
+              ]
+            }
+          }
+        });  
+      }
+    }
+  
   await prisma.presenza.deleteMany();
   await prisma.utente.deleteMany();
 
