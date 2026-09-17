@@ -8,7 +8,7 @@ export default async function HomeOperatore() {
     const oggi = new Date();
     const inizio = startOfDay(oggi);
     const fine = endOfDay(oggi);
-
+    
     const tavoliTotali = await prisma.tavolo.count();
     const tavoliOccupati = await prisma.occupazione.count({
       where: { terminataAlle: null }

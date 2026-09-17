@@ -1,0 +1,199 @@
+@use "../../../styles/variabili" as v;
+
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.intestazione {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem 1rem;
+}
+
+.titolo {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: v.$espresso;
+}
+
+.periodo {
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  background: v.$panna;
+  color: v.$espresso;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.schede {
+  display: flex;
+  gap: 1.5rem;
+  border-bottom: 1px solid rgba(v.$espresso, 0.12);
+}
+
+.schedaAttiva {
+  padding: 0 0 0.6rem;
+  border-bottom: 3px solid v.$rosso;
+  margin-bottom: -1px;
+  color: v.$espresso;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.kpi {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+
+.kpiCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.3rem 1.4rem;
+  border-radius: v.$radius;
+  background: v.$panna;
+  box-shadow: v.$ombra;
+}
+
+.kpiEtichetta {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: v.$muted;
+}
+
+.kpiRiga {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.8rem;
+}
+
+.kpiValore {
+  margin: 0;
+  font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: v.$espresso;
+}
+
+.giorno {
+  text-transform: capitalize;
+}
+
+.kpiNota {
+  margin: 0;
+  font-size: 0.8rem;
+  color: v.$muted;
+}
+
+.delta {
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(v.$espresso, 0.08);
+  color: v.$espresso;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.deltaSu {
+  background: rgba(v.$verde, 0.12);
+  color: v.$verde;
+}
+
+.deltaGiu {
+  background: rgba(v.$rosso, 0.1);
+  color: v.$rosso;
+}
+
+.corpo {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 1.2rem;
+  align-items: start;
+}
+
+.pannello {
+  padding: 1.3rem 1.4rem;
+  border-radius: v.$radius;
+  background: v.$panna;
+  box-shadow: v.$ombra;
+}
+
+.pannelloTitolo {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: v.$espresso;
+}
+
+.tabella {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    padding: 0 0 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: left;
+    color: v.$muted;
+  }
+
+  td {
+    padding: 0.75rem 0;
+    border-top: 1px solid rgba(v.$espresso, 0.1);
+    font-size: 0.95rem;
+    color: v.$espresso;
+  }
+}
+
+.colonnaRicavi {
+  text-align: right;
+}
+
+td.colonnaRicavi {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.posizione {
+  display: inline-grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0.6rem;
+  border-radius: 999px;
+  background: rgba(v.$espresso, 0.08);
+  color: v.$espresso;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.vuoto {
+  margin: 0;
+  color: v.$muted;
+  font-style: italic;
+}
+
+@media (max-width: 900px) {
+  .corpo {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .kpi {
+    grid-template-columns: 1fr;
+  }
+}
