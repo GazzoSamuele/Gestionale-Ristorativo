@@ -59,7 +59,7 @@ export default async function HomeTitolare() {
         titolo: "Analytics",
         valore: `${ordine}`,
         etichetta: "ordini attivi",
-        href: "/titolare/analytics"
+        href: "/titolare/analytics/venduto"
       },
     ];
     

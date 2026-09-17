@@ -22,7 +22,7 @@ export const voci: Voce[] = [
     etichetta: "Menu",
   },
   {
-    href: "/titolare/analytics",
+    href: "/titolare/analytics/venduto",
     sezione: "/titolare/analytics",
     etichetta: "Analytics",
   }

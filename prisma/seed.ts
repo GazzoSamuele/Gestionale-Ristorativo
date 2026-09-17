@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { subDays } from "date-fns";
+import { addHours, subDays, startOfDay, addMinutes } from "date-fns";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -23,6 +23,7 @@ async function main() {
   }
 
   await prisma.ordine.deleteMany();
+  await prisma.occupazione.deleteMany()
   await prisma.piatto.deleteMany();
   await prisma.categoria.deleteMany();
 
@@ -66,6 +67,29 @@ async function main() {
   
   await prisma.presenza.deleteMany();
   await prisma.utente.deleteMany();
+
+  const ricercaTavoli = await prisma.tavolo.findMany();
+  const tavoliServiti = [0,7,10,9,2,4,6,7,9,10,9,2,4,6];
+  const durataPermanenzaTavoli = [50, 75, 60, 90, 45, 105];
+
+  for (let i = 0; i < 14; i++) {
+    const giornoPartenzaCalcolo = subDays(new Date(), i);
+
+      for (let k = 0; k < tavoliServiti[i]; k++) {
+        const tavolo = ricercaTavoli[k % ricercaTavoli.length];
+        const inizio = addHours(startOfDay(giornoPartenzaCalcolo), 12 + k);
+        const fine = addMinutes(inizio, durataPermanenzaTavoli[k % durataPermanenzaTavoli.length]);
+          await prisma.occupazione.create({
+            data: {
+              tavoloId: tavolo.id,
+              iniziataAlle: inizio,
+              terminataAlle: fine,
+              oraPagamento: fine, 
+              copertiPresenti: tavolo.capienza
+            }
+          })
+      }
+  }
 
   const marco = await prisma.utente.create({ data: { nome: "Marco Verdi" } });
   const sara = await prisma.utente.create({ data: { nome: "Sara Gialli" } });
