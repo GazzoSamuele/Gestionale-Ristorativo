@@ -7,9 +7,9 @@ import styles from "../layout.module.scss";
 
 const schede = [
   { href: "/titolare/analytics/prenotazioni", etichetta: "Prenotazioni" },
+  { href: "/titolare/analytics/ordini", etichetta: "Ordini" },
   { href: "/titolare/analytics/venduto", etichetta: "Venduto" },
   { href: "/titolare/analytics/turnover", etichetta: "Turnover" },
-  { href: "/titolare/analytics/ordini", etichetta: "Ordini" },
 ];
 
 export default function SchedeAnalytics() {

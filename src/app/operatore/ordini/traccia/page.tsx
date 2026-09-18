@@ -56,8 +56,8 @@ export default async function Traccia() {
                       #{ordine.numero} · {ordine.fonte} · {ordine.righe.length} piatti
                     </p>
                     <TempoTrascorso da={ordine.statoDalle} />
-
-                    <PulsanteAvanza ordineId={ordine.id} />
+                  
+                    {ordine.stato !== "PRONTI" && <PulsanteAvanza ordineId={ordine.id} />}
                   </li>
                 ))}
               </ul>

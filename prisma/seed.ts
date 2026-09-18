@@ -54,6 +54,7 @@ async function main() {
           data: {                        
             nomeCliente: "Sara",
             creatoIl: giorno,
+            statoDalle: giorno,
             stato: "PRONTI",
             fonte: "ASPORTO",
             righe: {
@@ -96,6 +97,7 @@ async function main() {
         await prisma.ordine.create({
           data: {                        
             creatoIl: addMinutes(inizio, 10),
+            statoDalle: addMinutes(inizio, 10),
             occupazioneId: occupazione.id,
             stato: "PRONTI",
             fonte: "SALA",
