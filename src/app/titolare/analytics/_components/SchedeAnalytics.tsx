@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import clsx from "clsx";
 import styles from "../layout.module.scss";
 
@@ -13,13 +13,14 @@ const schede = [
 
 export default function SchedeAnalytics() {
   const pathname = usePathname();
+  const parametri = useSearchParams().toString();
 
   return (
     <nav className={styles.schede}>
       {schede.map((scheda) => (
         <Link
           key={scheda.href}
-          href={scheda.href}
+          href={parametri ? `${scheda.href}?${parametri}` : scheda.href}
           className={clsx(styles.scheda, pathname === scheda.href && styles.schedaAttiva)}
         >
           {scheda.etichetta}

@@ -1,12 +1,19 @@
 import { prisma } from "@/lib/prisma"
-import { startOfDay, subDays, differenceInMinutes, isSameDay, format } from "date-fns";
-import { it } from "date-fns/locale"
+import { startOfDay, subDays, differenceInMinutes, isSameDay } from "date-fns";
 import GraficoBarre from "../_components/GraficoBarre";
 import schede from "../schede.module.scss";
+import { etichettaGiorno, giorniFa, leggiPeriodo } from "../periodo";
 
-export default async function TurnoverPage() {
 
-    const inizio = startOfDay(subDays(new Date(), 6));
+export default async function TurnoverPage({
+        searchParams
+    }: {
+    searchParams: Promise<{ periodo?: string }>;
+    }) {
+    const { periodo } = await searchParams;
+    const giorni = leggiPeriodo(periodo);
+
+    const inizio = startOfDay(subDays(new Date(), giorni - 1));
     const occupazioni = await prisma.occupazione.findMany({
         where: {
             iniziataAlle: { gte: inizio },
@@ -31,9 +38,9 @@ export default async function TurnoverPage() {
 
     const numeroTavoli = await prisma.tavolo.count()
 
-    const rotazione = numeroTavoli > 0 ? tavoliServiti / numeroTavoli / 7 : 0;
+    const rotazione = numeroTavoli > 0 ? tavoliServiti / numeroTavoli / giorni : 0;
 
-    const perGiorno = [6, 5, 4, 3, 2, 1, 0].map((n) => {
+    const perGiorno = giorniFa(giorni).map((n) => {
         const data = startOfDay(subDays(new Date(), n));
         const occupazioniDelGiorno = occupazioni.filter((occupazione) =>
             isSameDay(occupazione.iniziataAlle, data),
@@ -41,7 +48,7 @@ export default async function TurnoverPage() {
         
         const totale = occupazioniDelGiorno.length
         return {
-            giorno: format(data, "EEE", { locale: it }),
+            giorno: etichettaGiorno(data, giorni),
             totale,
         };
     });

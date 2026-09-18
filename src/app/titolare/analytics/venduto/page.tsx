@@ -6,14 +6,22 @@ import clsx from "clsx";
 import GraficoBarre from "../_components/GraficoBarre";
 import styles from "./page.module.scss";
 import schede from "../schede.module.scss";
+import { giorniFa, etichettaGiorno, leggiPeriodo } from "../periodo";
 
 function euro(valore: number) {
   return `€ ${valore.toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
-export default async function AnalyticsPage() {
-  const inizio = startOfDay(subDays(new Date(), 6));
-  const inizioSettimanaScorsa = startOfDay(subDays(new Date(), 13));
+export default async function AnalyticsPage({
+      searchParams
+  }: {
+    searchParams: Promise<{ periodo?: string }>;
+  }) {
+  const { periodo } = await searchParams;
+  const giorni = leggiPeriodo(periodo);
+
+  const inizio = startOfDay(subDays(new Date(), giorni - 1));
+  const inizioSettimanaScorsa = startOfDay(subDays(new Date(), giorni * 2 - 1));
   const ordini = await prisma.ordine.findMany({
     where: {
       creatoIl: { gte: inizio },
@@ -63,7 +71,7 @@ export default async function AnalyticsPage() {
 
   const scontrinoMedio = ordini.length > 0 ? totale / ordini.length : 0;
 
-  const perGiorno = [6, 5, 4, 3, 2, 1, 0].map((n) => {
+  const perGiorno = giorniFa(giorni).map((n) => {
     const data = startOfDay(subDays(new Date(), n));
     const ordiniDelGiorno = ordiniConTotale.filter((ordine) =>
       isSameDay(ordine.creatoIl, data),
@@ -74,8 +82,8 @@ export default async function AnalyticsPage() {
     );
 
     return {
-      giorno: format(data, "EEE", { locale: it }),
-      giornoEsteso: format(data, "EEEE", { locale: it }),
+      giorno: etichettaGiorno(data, giorni),
+      giornoEsteso: format(data, "EEEE d MMMM", { locale: it }),
       totale,
     };
   });
@@ -122,7 +130,7 @@ export default async function AnalyticsPage() {
               )}
             >
               {variazione > 0 ? "▲ +" : variazione < 0 ? "▼ " : ""}
-              {variazione}% vs settimana scorsa
+              {variazione}% vs periodo precedente
             </span>
           </div>
           <p className={schede.kpiNota}>valore ordini · non incasso fiscale</p>

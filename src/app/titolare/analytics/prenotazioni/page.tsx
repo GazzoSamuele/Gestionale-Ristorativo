@@ -1,13 +1,19 @@
 import { prisma } from "@/lib/prisma"
-import { endOfDay, startOfDay, subDays, isSameDay, format } from "date-fns"
-import { it } from "date-fns/locale"
+import { endOfDay, startOfDay, subDays, isSameDay } from "date-fns"
 import GraficoBarre from "../_components/GraficoBarre"
 import schede from "../schede.module.scss"
 import styles from "./page.module.scss"
+import { giorniFa, etichettaGiorno, leggiPeriodo} from "../periodo";
 
-export default async function PrenotazioniPage() {
+export default async function PrenotazioniPage({
+        searchParams
+    }: {
+    searchParams: Promise<{ periodo?: string }>;
+    }) {
+    const { periodo } = await searchParams;
+    const giorni = leggiPeriodo(periodo);
     
-    const inizio = startOfDay(subDays(new Date(), 6))
+    const inizio = startOfDay(subDays(new Date(), giorni - 1))
     const prenotazioni = await prisma.prenotazione.findMany({
         where: {
             dataOra: { gte: inizio, lte: endOfDay(new Date())}
@@ -28,7 +34,7 @@ export default async function PrenotazioniPage() {
     const percentualeNonPresentate = prenotazioni.length > 0 ? Math.round(nonPresentata / prenotazioni.length * 100) : 0;
     const percentualeInAttesa = prenotazioni.length > 0 ? Math.round(inAttesa / prenotazioni.length * 100) : 0;
 
-     const perGiorno = [6, 5, 4, 3, 2, 1, 0].map((n) => {
+     const perGiorno = giorniFa(giorni).map((n) => {
         const data = startOfDay(subDays(new Date(), n));
         const prenotazioniDelGiorno = prenotazioni.filter((prenotazione) =>
             isSameDay(prenotazione.dataOra, data),
@@ -36,7 +42,7 @@ export default async function PrenotazioniPage() {
         
         const totale = prenotazioniDelGiorno.length
         return {
-            giorno: format(data, "EEE", { locale: it }),
+            giorno: etichettaGiorno(data, giorni),
             totale,
         };
     });
@@ -56,7 +62,7 @@ export default async function PrenotazioniPage() {
                 <article className={schede.kpiCard}>
                     <h2 className={schede.kpiEtichetta}>Prenotazioni</h2>
                     <p className={schede.kpiValore}>{prenotazioniTotali}</p>
-                    <p className={schede.kpiNota}>negli ultimi 7 giorni</p>
+                    <p className={schede.kpiNota}>negli ultimi {giorni} giorni</p>
                 </article>
 
                 <article className={schede.kpiCard}>

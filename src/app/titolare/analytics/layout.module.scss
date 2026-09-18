@@ -23,13 +23,35 @@
   color: v.$espresso;
 }
 
-.periodo {
-  padding: 0.45rem 1rem;
+.periodi {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
   border-radius: 999px;
   background: v.$panna;
-  color: v.$espresso;
+}
+
+.periodo {
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  color: v.$muted;
   font-size: 0.85rem;
   font-weight: 700;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    color: v.$espresso;
+  }
+}
+
+.periodoAttivo {
+  background: v.$espresso;
+  color: v.$cream;
+
+  &:hover {
+    color: v.$cream;
+  }
 }
 
 .schede {

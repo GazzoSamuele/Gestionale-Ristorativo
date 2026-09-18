@@ -1,4 +1,5 @@
 import SchedeAnalytics from "./_components/SchedeAnalytics";
+import SceltaPeriodo from "./_components/SceltaPeriodo";
 import styles from "./layout.module.scss";
 
 export default function AnalyticsLayout({ children }: { children: React.ReactNode }) {
@@ -6,7 +7,7 @@ export default function AnalyticsLayout({ children }: { children: React.ReactNod
     <section className={styles.pagina}>
       <header className={styles.intestazione}>
         <h1 className={styles.titolo}>Analytics</h1>
-        <span className={styles.periodo}>Ultimi 7 giorni</span>
+        <SceltaPeriodo />
       </header>
 
       <SchedeAnalytics />
