@@ -23,7 +23,8 @@ async function main() {
   }
 
   await prisma.ordine.deleteMany();
-  await prisma.occupazione.deleteMany()
+  await prisma.occupazione.deleteMany();
+  await prisma.prenotazione.deleteMany();
   await prisma.piatto.deleteMany();
   await prisma.categoria.deleteMany();
 
@@ -90,6 +91,27 @@ async function main() {
           })
       }
   }
+
+  const prenotazioniPerGiorno = [0,4,5,6,7,8,9,10,11,12,8,4,9,3];
+  const stati = ["IN_ATTESA", "IN_ATTESA", "IN_ATTESA", "ANNULLATA", "IN_ATTESA", "NON_PRESENTATA"] as const;
+
+  for (let i = 0; i < 14; i++) {
+      const giornoPartenzaCalcoloPrenotazioni = subDays(new Date(), i);
+
+        for (let k = 0; k < prenotazioniPerGiorno[i]; k++) {
+          const inizio = addHours(startOfDay(giornoPartenzaCalcoloPrenotazioni), 19 + (k % 4));
+            await prisma.prenotazione.create({
+              data: {
+                nome: "Cliente di prova",
+                dataOra: inizio,
+                copertiPrenotati: 2 + (k % 5),
+                stato: stati [k % stati.length],
+
+              }
+            })
+      }
+
+    }
 
   const marco = await prisma.utente.create({ data: { nome: "Marco Verdi" } });
   const sara = await prisma.utente.create({ data: { nome: "Sara Gialli" } });

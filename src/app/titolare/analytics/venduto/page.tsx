@@ -147,7 +147,7 @@ export default async function AnalyticsPage() {
         </article>
       </div>
 
-      <div className={styles.corpo}>
+      <div className={schede.corpo}>
         <article className={schede.pannello}>
           <h2 className={schede.pannelloTitolo}>Venduto per giorno</h2>
           <GraficoBarre dati={perGiorno} unita="euro" etichetta="Venduto" />

@@ -6,8 +6,9 @@ import clsx from "clsx";
 import styles from "../layout.module.scss";
 
 const schede = [
+  { href: "/titolare/analytics/prenotazioni", etichetta: "Prenotazioni" },
   { href: "/titolare/analytics/venduto", etichetta: "Venduto" },
-  { href: "/titolare/analytics/turnover", etichetta: "Turnover" }
+  { href: "/titolare/analytics/turnover", etichetta: "Turnover" },
 ];
 
 export default function SchedeAnalytics() {
