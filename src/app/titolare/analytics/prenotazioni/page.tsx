@@ -2,7 +2,6 @@ import { prisma } from "@/lib/prisma"
 import { endOfDay, startOfDay, subDays, isSameDay } from "date-fns"
 import GraficoBarre from "../_components/GraficoBarre"
 import schede from "../schede.module.scss"
-import styles from "./page.module.scss"
 import { giorniFa, etichettaGiorno, leggiPeriodo} from "../periodo";
 
 export default async function PrenotazioniPage({
@@ -91,18 +90,18 @@ export default async function PrenotazioniPage({
 
                 <article className={schede.pannello}>
                     <h2 className={schede.pannelloTitolo}>Esito delle prenotazioni</h2>
-                    <ul className={styles.esiti}>
+                    <ul className={schede.esiti}>
                         {esiti.map((esito) => (
-                            <li key={esito.etichetta} className={styles.esito}>
-                                <div className={styles.esitoRiga}>
+                            <li key={esito.etichetta} className={schede.esito}>
+                                <div className={schede.esitoRiga}>
                                     <span>{esito.etichetta}</span>
-                                    <span className={styles.esitoValore}>
+                                    <span className={schede.esitoValore}>
                                         {esito.percentuale}%
-                                        <span className={styles.esitoConteggio}>({esito.conteggio})</span>
+                                        <span className={schede.esitoConteggio}>({esito.conteggio})</span>
                                     </span>
                                 </div>
-                                <div className={styles.traccia}>
-                                    <div className={styles.barra} style={{ width: `${esito.percentuale}%` }} />
+                                <div className={schede.traccia}>
+                                    <div className={schede.barra} style={{ width: `${esito.percentuale}%` }} />
                                 </div>
                             </li>
                         ))}

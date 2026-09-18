@@ -83,3 +83,66 @@
     grid-template-columns: 1fr;
   }
 }
+
+.esiti {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.esito {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.esitoRiga {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  font-size: 0.95rem;
+  color: v.$espresso;
+}
+
+.esitoValore {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.esitoConteggio {
+  margin-left: 0.4rem;
+  font-weight: 400;
+  color: v.$muted;
+}
+
+.traccia {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(v.$espresso, 0.08);
+  overflow: hidden;
+}
+
+.barra {
+  height: 100%;
+  border-radius: 999px;
+  background: #b5652a;
+}
+
+.gruppo + .gruppo {
+  margin-top: 1.4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(v.$espresso, 0.1);
+}
+
+.gruppoTitolo {
+  margin: 0 0 0.9rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: v.$muted;
+}

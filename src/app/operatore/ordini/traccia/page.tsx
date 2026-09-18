@@ -3,6 +3,7 @@ import clsx from "clsx";
 import TempoTrascorso from "@/app/operatore/sala/tavoli/TempoTrascorso";
 import PulsanteAvanza from "../_components/PulsanteAvanza";
 import styles from "./page.module.scss";
+import { startOfDay } from "date-fns";
 
 const colonne =  [ 
     { stato: "NUOVI_ARRIVATI", etichetta: "Nuovi arrivati" },
@@ -13,6 +14,12 @@ const colonne =  [
 export default async function Traccia() {
   const ordini = await prisma.ordine.findMany({
     orderBy: { creatoIl: "asc"},
+    where: {
+      OR: [
+        { creatoIl: { gte: startOfDay(new Date()) } },
+        { stato: { not: "PRONTI" } }
+      ]
+    },
     include: {
       righe: true,
       occupazione: {

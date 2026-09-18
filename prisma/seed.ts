@@ -69,7 +69,9 @@ async function main() {
   await prisma.presenza.deleteMany();
   await prisma.utente.deleteMany();
 
-  const ricercaTavoli = await prisma.tavolo.findMany();
+  const ricercaTavoli = await prisma.tavolo.findMany({
+    orderBy: { numero: "asc"}
+  });
   const tavoliServiti = [0,7,10,9,2,4,6,7,9,10,9,2,4,6];
   const durataPermanenzaTavoli = [50, 75, 60, 90, 45, 105];
 
@@ -78,9 +80,10 @@ async function main() {
 
       for (let k = 0; k < tavoliServiti[i]; k++) {
         const tavolo = ricercaTavoli[k % ricercaTavoli.length];
+        const piatto = ricercaPiatti[k % ricercaPiatti.length];
         const inizio = addHours(startOfDay(giornoPartenzaCalcolo), 12 + k);
         const fine = addMinutes(inizio, durataPermanenzaTavoli[k % durataPermanenzaTavoli.length]);
-          await prisma.occupazione.create({
+        const occupazione = await prisma.occupazione.create({
             data: {
               tavoloId: tavolo.id,
               iniziataAlle: inizio,
@@ -89,6 +92,20 @@ async function main() {
               copertiPresenti: tavolo.capienza
             }
           })
+
+        await prisma.ordine.create({
+          data: {                        
+            creatoIl: addMinutes(inizio, 10),
+            occupazioneId: occupazione.id,
+            stato: "PRONTI",
+            fonte: "SALA",
+            righe: {
+              create: [
+                { piattoId: piatto.id, quantita: tavolo.capienza, prezzoUnitario: piatto.prezzo }
+              ]
+            }
+          }
+        });  
       }
   }
 

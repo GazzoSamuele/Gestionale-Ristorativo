@@ -7,10 +7,7 @@ import GraficoBarre from "../_components/GraficoBarre";
 import styles from "./page.module.scss";
 import schede from "../schede.module.scss";
 import { giorniFa, etichettaGiorno, leggiPeriodo } from "../periodo";
-
-function euro(valore: number) {
-  return `€ ${valore.toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-}
+import { euro } from "../formato";
 
 export default async function AnalyticsPage({
       searchParams
