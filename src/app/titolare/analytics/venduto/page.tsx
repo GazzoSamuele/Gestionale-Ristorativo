@@ -3,8 +3,9 @@ import { isSameDay, startOfDay, subDays } from "date-fns";
 import { it } from "date-fns/locale";
 import { format } from "date-fns";
 import clsx from "clsx";
-import GraficoVenduto from "../_components/GraficoVenduto";
+import GraficoBarre from "../_components/GraficoBarre";
 import styles from "./page.module.scss";
+import schede from "../schede.module.scss";
 
 function euro(valore: number) {
   return `€ ${valore.toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -108,11 +109,11 @@ export default async function AnalyticsPage() {
 
   return (
     <>
-      <div className={styles.kpi}>
-        <article className={styles.kpiCard}>
-          <h2 className={styles.kpiEtichetta}>Venduto</h2>
-          <div className={styles.kpiRiga}>
-            <p className={styles.kpiValore}>{euro(totale)}</p>
+      <div className={schede.kpi}>
+        <article className={schede.kpiCard}>
+          <h2 className={schede.kpiEtichetta}>Venduto</h2>
+          <div className={schede.kpiRiga}>
+            <p className={schede.kpiValore}>{euro(totale)}</p>
             <span
               className={clsx(
                 styles.delta,
@@ -124,36 +125,36 @@ export default async function AnalyticsPage() {
               {variazione}% vs settimana scorsa
             </span>
           </div>
-          <p className={styles.kpiNota}>valore ordini · non incasso fiscale</p>
+          <p className={schede.kpiNota}>valore ordini · non incasso fiscale</p>
         </article>
 
-        <article className={styles.kpiCard}>
-          <h2 className={styles.kpiEtichetta}>Scontrino medio</h2>
-          <p className={styles.kpiValore}>{euro(scontrinoMedio)}</p>
-          <p className={styles.kpiNota}>
+        <article className={schede.kpiCard}>
+          <h2 className={schede.kpiEtichetta}>Scontrino medio</h2>
+          <p className={schede.kpiValore}>{euro(scontrinoMedio)}</p>
+          <p className={schede.kpiNota}>
             per ordine · su {ordini.length} ordini
           </p>
         </article>
 
-        <article className={styles.kpiCard}>
-          <h2 className={styles.kpiEtichetta}>Giorno migliore</h2>
-          <p className={clsx(styles.kpiValore, styles.giorno)}>
+        <article className={schede.kpiCard}>
+          <h2 className={schede.kpiEtichetta}>Giorno migliore</h2>
+          <p className={clsx(schede.kpiValore, styles.giorno)}>
             {massimoTotale > 0 ? giornoMigliore?.giornoEsteso : "—"}
           </p>
-          <p className={styles.kpiNota}>
+          <p className={schede.kpiNota}>
             {massimoTotale > 0 ? euro(massimoTotale) : "nessuna vendita"}
           </p>
         </article>
       </div>
 
       <div className={styles.corpo}>
-        <article className={styles.pannello}>
-          <h2 className={styles.pannelloTitolo}>Venduto per giorno</h2>
-          <GraficoVenduto dati={perGiorno} />
+        <article className={schede.pannello}>
+          <h2 className={schede.pannelloTitolo}>Venduto per giorno</h2>
+          <GraficoBarre dati={perGiorno} unita="euro" etichetta="Venduto" />
         </article>
 
-        <article className={styles.pannello}>
-          <h2 className={styles.pannelloTitolo}>Top piatti</h2>
+        <article className={schede.pannello}>
+          <h2 className={schede.pannelloTitolo}>Top piatti</h2>
           {piattiVenduti.length > 0 ? (
             <table className={styles.tabella}>
               <thead>

@@ -1,51 +1,7 @@
 @use "../../../../styles/variabili" as v;
 
-.kpi {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.2rem;
-}
-
-.kpiCard {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  padding: 1.3rem 1.4rem;
-  border-radius: v.$radius;
-  background: v.$panna;
-  box-shadow: v.$ombra;
-}
-
-.kpiEtichetta {
-  margin: 0;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: v.$muted;
-}
-
-.kpiRiga {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.4rem 0.8rem;
-}
-
-.kpiValore {
-  margin: 0;
-  font-size: clamp(1.6rem, 3.2vw, 2.2rem);
-  font-weight: 800;
-  line-height: 1.15;
-  color: v.$espresso;
-}
-
 .giorno {
   text-transform: capitalize;
-}
-
-.kpiNota {
-  margin: 0;
-  font-size: 0.8rem;
-  color: v.$muted;
 }
 
 .delta {
@@ -73,20 +29,6 @@
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   gap: 1.2rem;
   align-items: start;
-}
-
-.pannello {
-  padding: 1.3rem 1.4rem;
-  border-radius: v.$radius;
-  background: v.$panna;
-  box-shadow: v.$ombra;
-}
-
-.pannelloTitolo {
-  margin: 0 0 1rem;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: v.$espresso;
 }
 
 .tabella {
@@ -141,12 +83,6 @@ td.colonnaRicavi {
 
 @media (max-width: 900px) {
   .corpo {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 600px) {
-  .kpi {
     grid-template-columns: 1fr;
   }
 }
