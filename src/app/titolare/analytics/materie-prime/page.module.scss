@@ -1,0 +1,28 @@
+@use "../../../../styles/variabili" as v;
+
+.giorni {
+  display: inline-block;
+  min-width: 5.5rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(v.$espresso, 0.06);
+  color: v.$espresso;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.giorniPochi {
+  background: rgba(v.$rosso, 0.1);
+  color: v.$rosso;
+}
+
+.nessunConsumo {
+  color: v.$muted;
+  font-weight: 400;
+}
+
+.nota {
+  margin: 1rem 0 0;
+  font-size: 0.8rem;
+  color: v.$muted;
+}

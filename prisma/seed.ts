@@ -25,6 +25,7 @@ async function main() {
   await prisma.ordine.deleteMany();
   await prisma.occupazione.deleteMany();
   await prisma.prenotazione.deleteMany();
+  await prisma.ingrediente.deleteMany()
   await prisma.piatto.deleteMany();
   await prisma.categoria.deleteMany();
 
@@ -160,6 +161,39 @@ async function main() {
       { nome: "Farina 00", quantita: 60, limiteMinimo: 25, unita: "KG", fornitore: "Molino Sereni" }
     ]
   });
+
+  const ricercaProdotti = await prisma.prodotto.findMany();
+
+  const ricette = [
+    { piatto: "Carbonara", prodotto: "Spaghetti", quantita: 0.1 },
+    { piatto: "Carbonara", prodotto: "Guanciale", quantita: 0.05 },
+    { piatto: "Carbonara", prodotto: "Uova", quantita: 1 },
+    { piatto: "Carbonara", prodotto: "Pecorino romano", quantita: 0.015 },
+    { piatto: "Amatriciana", prodotto: "Spaghetti", quantita: 0.1 },
+    { piatto: "Amatriciana", prodotto: "Guanciale", quantita: 0.04 },
+    { piatto: "Amatriciana", prodotto: "Pomodoro pelato", quantita: 0.1 },
+    { piatto: "Amatriciana", prodotto: "Pecorino romano", quantita: 0.015 },
+    { piatto: "Tagliata di manzo", prodotto: "Olio extravergine", quantita: 0.01 },
+    { piatto: "Grigliata mista", prodotto: "Olio extravergine", quantita: 0.015 },
+    { piatto: "Vino della casa", prodotto: "Vino rosso della casa", quantita: 0.5 }
+  ];
+
+  for (const riga of ricette) {
+    const piatto = ricercaPiatti.find((p) => p.nome === riga.piatto);
+    const prodotto = ricercaProdotti.find((p) => p.nome === riga.prodotto);
+
+    if (!piatto || !prodotto) {
+      throw new Error(`Ricetta non valida: ${riga.piatto} / ${riga.prodotto}`);
+    }
+
+    await prisma.ingrediente.create({
+      data: {
+        piattoId: piatto.id,
+        prodottoId: prodotto.id,
+        quantita: riga.quantita
+      }
+    });
+  }
 
   await prisma.premio.deleteMany();
   await prisma.premio.createMany({

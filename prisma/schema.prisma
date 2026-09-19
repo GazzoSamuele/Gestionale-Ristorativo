@@ -57,13 +57,14 @@ model Piatto {
   categoria            Categoria @relation(fields: [categoriaId], references: [id], onDelete: Restrict)
   categoriaId          String
   righe                RigaOrdine[]
+  ingredienti          Ingrediente[]
 }
 
 model Categoria {
   id                  String     @id @default(cuid())
   nome                String
   ordine              Int
-  piatti              Piatto[] 
+  piatti              Piatto[]  
 }
 
 enum FonteOrdine {
@@ -139,6 +140,7 @@ model Prodotto {
   unita               UnitaMisura
   fornitore           String?
   immagine            String?
+  ingredienti         Ingrediente[]
 }
 model Cliente {
   id                  String   @id @default(cuid())
@@ -163,3 +165,14 @@ model Segnalazione {
   creatoIl            DateTime  @default(now())
   letta               Boolean   @default(false)
 }
+
+model Ingrediente {
+  id                  String    @id @default(cuid())
+  prodotto            Prodotto @relation(fields: [prodottoId], references: [id], onDelete: Restrict)
+  prodottoId          String
+  piatto              Piatto @relation(fields: [piattoId], references: [id], onDelete: Cascade)
+  piattoId            String
+  quantita            Decimal @db.Decimal(10,3)
+  @@unique([piattoId, prodottoId])
+}
+

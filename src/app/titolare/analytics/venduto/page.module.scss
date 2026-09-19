@@ -24,37 +24,6 @@
   color: v.$rosso;
 }
 
-.tabella {
-  width: 100%;
-  border-collapse: collapse;
-
-  th {
-    padding: 0 0 0.6rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    text-align: left;
-    color: v.$muted;
-  }
-
-  td {
-    padding: 0.75rem 0;
-    border-top: 1px solid rgba(v.$espresso, 0.1);
-    font-size: 0.95rem;
-    color: v.$espresso;
-  }
-}
-
-.colonnaRicavi {
-  text-align: right;
-}
-
-td.colonnaRicavi {
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-
 .posizione {
   display: inline-grid;
   place-items: center;

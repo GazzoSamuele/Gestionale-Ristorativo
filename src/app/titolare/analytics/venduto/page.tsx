@@ -161,11 +161,11 @@ export default async function AnalyticsPage({
         <article className={schede.pannello}>
           <h2 className={schede.pannelloTitolo}>Top piatti</h2>
           {piattiVenduti.length > 0 ? (
-            <table className={styles.tabella}>
+            <table className={schede.tabella}>
               <thead>
                 <tr>
                   <th scope="col">Piatto</th>
-                  <th scope="col" className={styles.colonnaRicavi}>
+                  <th scope="col" className={schede.colonnaNumero}>
                     Ricavi
                   </th>
                 </tr>
@@ -177,7 +177,7 @@ export default async function AnalyticsPage({
                       <span className={styles.posizione}>{posizione + 1}</span>
                       {piatto.nome}
                     </td>
-                    <td className={styles.colonnaRicavi}>
+                    <td className={schede.colonnaNumero}>
                       {euro(piatto.ricavi)}
                     </td>
                   </tr>

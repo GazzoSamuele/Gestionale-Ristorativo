@@ -10,6 +10,7 @@ const schede = [
   { href: "/titolare/analytics/ordini", etichetta: "Ordini" },
   { href: "/titolare/analytics/venduto", etichetta: "Venduto" },
   { href: "/titolare/analytics/turnover", etichetta: "Turnover" },
+  { href: "/titolare/analytics/materie-prime", etichetta: "Materie prime" },
 ];
 
 export default function SchedeAnalytics() {
