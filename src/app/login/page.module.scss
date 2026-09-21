@@ -1,0 +1,101 @@
+@use "../../styles/variabili" as v;
+
+.schermata {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: 1.5rem;
+  background: v.$sfondo;
+}
+
+.scheda {
+  width: 100%;
+  max-width: 380px;
+  padding: 2.2rem 2rem 2.4rem;
+  border-radius: v.$radius;
+  background: v.$panna;
+  box-shadow: v.$ombra;
+}
+
+.intestazione {
+  margin-bottom: 1.8rem;
+  text-align: center;
+}
+
+.titolo {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: v.$espresso;
+}
+
+.sottotitolo {
+  margin: 0.4rem 0 0;
+  font-size: 0.9rem;
+  color: v.$muted;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.etichetta {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: v.$muted;
+}
+
+.input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.75rem 0.95rem;
+  border: 1px solid rgba(v.$espresso, 0.15);
+  border-radius: v.$radius-sm;
+  background: #fff;
+  color: v.$espresso;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &:focus {
+    outline: none;
+    border-color: v.$rosso;
+    box-shadow: 0 0 0 3px rgba(v.$rosso, 0.12);
+  }
+}
+
+.bottone {
+  margin-top: 0.5rem;
+  min-height: 50px;
+  padding: 0.85rem 1.2rem;
+  border: none;
+  border-radius: 999px;
+  background: v.$rosso;
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+
+  &:hover {
+    background: #a5332a;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

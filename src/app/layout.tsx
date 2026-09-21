@@ -27,10 +27,6 @@ export default function RootLayout({
     <html lang="it" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
         {children}
-
-        {/* Contenitore degli avvisi: senza questo, toast.error() non ha dove
-            comparire e non succede niente. In alto a destra come deciso in
-            STRUTTURA.md, per non litigare con la barra di navigazione in basso. */}
         <Toaster position="top-right" richColors />
       </body>
     </html>
