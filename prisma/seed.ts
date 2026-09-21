@@ -132,13 +132,14 @@ async function main() {
       }
 
     }
-
-  const marco = await prisma.utente.create({ data: { nome: "Marco Verdi" } });
-  const sara = await prisma.utente.create({ data: { nome: "Sara Gialli" } });
-  const alessandro = await prisma.utente.create({ data: { nome: "Alessandro Rossi" } });
-  const simone = await prisma.utente.create({ data: { nome: "Simone Neri" } });
-  const fabio = await prisma.utente.create({ data: { nome: "Fabio Aranci" } });
-  const alessia = await prisma.utente.create({ data: { nome: "Alessia Azzurri" } });
+  
+  await prisma.utente.create({ data: { nome: "Samu", email: "samu@gestionale.local", ruolo: "SUPER_ADMIN"} });
+  const marco = await prisma.utente.create({ data: { nome: "Marco Verdi", email: "marco.verdi@gestionale.local", ruolo: "OPERATORE" } });
+  const sara = await prisma.utente.create({ data: { nome: "Sara Gialli", email: "sara.gialli@gestionale.local", ruolo: "OPERATORE" } });
+  const alessandro = await prisma.utente.create({ data: { nome: "Alessandro Rossi", email: "alessandro.rossi@gestionale.local", ruolo: "ADMIN" } });
+  const simone = await prisma.utente.create({ data: { nome: "Simone Neri", email: "simone.neri@gestionale.local", ruolo: "OPERATORE" } });
+  const fabio = await prisma.utente.create({ data: { nome: "Fabio Aranci", email: "fabio.aranci@gestionale.local", ruolo: "OPERATORE" } });
+  const alessia = await prisma.utente.create({ data: { nome: "Alessia Azzurri", email: "alessia.azzurri@gestionale.local", ruolo: "ADMIN" } });
 
   await prisma.presenza.createMany({
     data: [
