@@ -8,6 +8,14 @@ export const auth = betterAuth({
   }),
   user: {
     modelName: "utente",
-    fields: { name: "nome" }
-}
+    fields: { name: "nome" },
+    additionalFields: {
+      ruolo: {
+        type: ["OPERATORE", "ADMIN", "SUPER_ADMIN"],
+        required: false,
+        input: false,
+      },
+    },
+  },
+  emailAndPassword: { enabled: true },
 });

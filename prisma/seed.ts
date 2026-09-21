@@ -2,6 +2,7 @@ import "dotenv/config";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { addHours, subDays, startOfDay, addMinutes } from "date-fns";
+import { auth } from "../src/lib/auth";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -130,23 +131,50 @@ async function main() {
               }
             })
       }
-
     }
-  
-  await prisma.utente.create({ data: { nome: "Samu", email: "samu@gestionale.local", ruolo: "SUPER_ADMIN"} });
-  const marco = await prisma.utente.create({ data: { nome: "Marco Verdi", email: "marco.verdi@gestionale.local", ruolo: "OPERATORE" } });
-  const sara = await prisma.utente.create({ data: { nome: "Sara Gialli", email: "sara.gialli@gestionale.local", ruolo: "OPERATORE" } });
-  const alessandro = await prisma.utente.create({ data: { nome: "Alessandro Rossi", email: "alessandro.rossi@gestionale.local", ruolo: "ADMIN" } });
-  const simone = await prisma.utente.create({ data: { nome: "Simone Neri", email: "simone.neri@gestionale.local", ruolo: "OPERATORE" } });
-  const fabio = await prisma.utente.create({ data: { nome: "Fabio Aranci", email: "fabio.aranci@gestionale.local", ruolo: "OPERATORE" } });
-  const alessia = await prisma.utente.create({ data: { nome: "Alessia Azzurri", email: "alessia.azzurri@gestionale.local", ruolo: "ADMIN" } });
 
-  await prisma.presenza.createMany({
-    data: [
-      { utenteId: marco.id },
-      { utenteId: sara.id }
-    ]
-  });
+    const staff = [
+      { nome: "Samu", email: "samu@gestionale.local", ruolo: "SUPER_ADMIN" },
+      { nome: "Marco Verdi", email: "marco.verdi@gestionale.local", ruolo: "OPERATORE" },
+      { nome: "Sara Gialli", email: "sara.gialli@gestionale.local", ruolo: "OPERATORE" },
+      { nome: "Alessandro Rossi", email: "alessandro.rossi@gestionale.local", ruolo: "ADMIN" },
+      { nome: "Simone Neri", email: "simone.neri@gestionale.local", ruolo: "OPERATORE" },
+      { nome: "Fabio Aranci", email: "fabio.aranci@gestionale.local", ruolo: "OPERATORE" },
+      { nome: "Alessia Azzurri", email: "alessia.azzurri@gestionale.local", ruolo: "ADMIN" },
+    ] as const;
+
+    const utentiCreati = [];
+
+    for (const riga of staff) {
+      const risultato = await auth.api.signUpEmail({
+        body: {
+          name: riga.nome,
+          email: riga.email,
+          password: "gestionale2026"
+        }
+      });
+
+      await prisma.utente.update({
+        where: { id: risultato.user.id },
+        data: { ruolo: riga.ruolo }
+      });
+
+      utentiCreati.push(risultato.user);
+    }
+
+    const marco = utentiCreati.find((u) => u.email === "marco.verdi@gestionale.local");
+    const sara  = utentiCreati.find((u) => u.email === "sara.gialli@gestionale.local");
+
+    if (!marco || !sara) {
+      throw new Error(`Utenti non validi`);
+    }
+
+    await prisma.presenza.createMany({
+      data: [
+        { utenteId: marco.id },
+        { utenteId: sara.id }
+      ]
+    });
 
   await prisma.prodotto.deleteMany();
 
