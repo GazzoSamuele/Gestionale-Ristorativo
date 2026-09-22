@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import styles from "./style-layout.module.scss";
 import { auth } from "../../../src/lib/auth";
 import Tesserino from "@/components/tesserino";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -13,9 +14,17 @@ export default async function OperatoreLayout({ children }: { children: React.Re
       headers: await headers() 
     })
 
+    if (!sessione){
+      redirect("/login")
+    }
+
   return (
     <div className={styles.area}>
-      <Tesserino nome={sessione?.user.name ?? null} ruolo={sessione?.user.ruolo ?? null} />
+      <Tesserino
+        nome={sessione.user.name}
+        ruolo={sessione.user.ruolo ?? null}
+        puoUscire={sessione.user.ruolo !== "OPERATORE"}
+      />
 
       <main className={styles.contenuto}>{children}</main>
 

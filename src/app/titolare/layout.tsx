@@ -21,7 +21,11 @@ export default async function TitolareLayout({ children }: { children: React.Rea
   
   return (
     <div className={styles.area}>
-      <Tesserino nome={sessione.user.name} ruolo={sessione.user.ruolo} />
+      <Tesserino
+        nome={sessione.user.name}
+        ruolo={sessione.user.ruolo}
+        puoUscire={true}
+      />
 
       <main className={styles.contenuto}>{children}</main>
 

@@ -135,6 +135,7 @@ async function main() {
 
     const staff = [
       { nome: "Samu", email: "samu@gestionale.local", ruolo: "SUPER_ADMIN" },
+      { nome: "Locale", email: "locale@gestionale.local", ruolo: "OPERATORE" },
       { nome: "Marco Verdi", email: "marco.verdi@gestionale.local", ruolo: "OPERATORE" },
       { nome: "Sara Gialli", email: "sara.gialli@gestionale.local", ruolo: "OPERATORE" },
       { nome: "Alessandro Rossi", email: "alessandro.rossi@gestionale.local", ruolo: "ADMIN" },

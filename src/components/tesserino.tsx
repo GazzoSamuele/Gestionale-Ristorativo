@@ -12,9 +12,10 @@ const coloreRuolo: Record<string, string> = {
   SUPER_ADMIN: styles.superAdmin
 };
 
-export default function Tesserino({nome,ruolo}: {
+export default function Tesserino({nome,ruolo, puoUscire}: {
   nome: string | null;
   ruolo: string | null;
+  puoUscire: boolean;
 }) {
   const router = useRouter();
   const [aperto, setAperto] = useState(false);
@@ -39,10 +40,10 @@ export default function Tesserino({nome,ruolo}: {
         >
             <span className={styles.nome}>{nome}</span>
             <span className={styles.ruolo}>{ruolo?.replace("_", " ")}</span>
-            <span className={styles.freccia}>{aperto ? "▲" : "▼"}</span>
+            {puoUscire && <span className={styles.freccia}>{aperto ? "▲" : "▼"}</span> }
         </button>
 
-        {aperto && (
+        {aperto && puoUscire && (
             <div className={styles.menu}>
             <button type="button" className={styles.esci} onClick={esci} disabled={uscita}>
             {uscita ? "Uscita…" : "Esci"}
