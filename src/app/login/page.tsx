@@ -28,7 +28,7 @@ export default function LoginPage() {
 
         router.push("/");
   };
-    
+
     return (
         <section className={styles.schermata}>
             <div className={styles.scheda}>

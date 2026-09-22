@@ -1,0 +1,102 @@
+@use "../styles/variabili" as v;
+
+.schermata {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: 1.5rem;
+  background: v.$sfondo;
+}
+
+.contenitore {
+  width: 100%;
+  max-width: 640px;
+}
+
+.intestazione {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.titolo {
+  margin: 0;
+  font-size: clamp(1.7rem, 4vw, 2.3rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: v.$espresso;
+}
+
+.sottotitolo {
+  margin: 0.5rem 0 0;
+  font-size: 0.95rem;
+  color: v.$muted;
+}
+
+.scelte {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+
+@media (max-width: 560px) {
+  .scelte {
+    grid-template-columns: 1fr;
+  }
+}
+
+.scheda {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-height: 150px;
+  padding: 1.5rem 1.4rem;
+  border-radius: v.$radius;
+  border-top: 5px solid transparent;
+  background: v.$panna;
+  box-shadow: v.$ombra;
+  color: v.$espresso;
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.operatore {
+  border-top-color: v.$rosso;
+}
+
+.titolare {
+  border-top-color: v.$giallo;
+}
+
+.etichetta {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: v.$muted;
+}
+
+.nomeArea {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.descrizione {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: v.$muted;
+}
+
+.freccia {
+  margin-top: auto;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: v.$espresso;
+}
