@@ -44,7 +44,8 @@ export const voci: Voce[] = [
     sottoSchede: [
       { href: "/operatore/cucina/sala", etichetta: "Sala" },
       { href: "/operatore/cucina/asporti", etichetta: "Asporti" },
-      { href: "/operatore/cucina/magazzino", etichetta: "Magazzino" }
+      { href: "/operatore/cucina/magazzino", etichetta: "Magazzino" },
+      { href: "/operatore/cucina/consegne", etichetta: "Consegne" },
     ]
   }
 ];

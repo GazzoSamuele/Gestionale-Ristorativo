@@ -26,7 +26,8 @@ async function main() {
   await prisma.ordine.deleteMany();
   await prisma.occupazione.deleteMany();
   await prisma.prenotazione.deleteMany();
-  await prisma.ingrediente.deleteMany()
+  await prisma.ingrediente.deleteMany();
+  await prisma.fornitura.deleteMany();
   await prisma.piatto.deleteMany();
   await prisma.categoria.deleteMany();
 
@@ -181,8 +182,8 @@ async function main() {
 
   await prisma.prodotto.createMany({
     data: [
-      { nome: "Guanciale", quantita: 10, limiteMinimo: 15, unita: "KG", fornitore: "RomaTravel" },
-      { nome: "Pecorino romano", quantita: 2, limiteMinimo: 8, unita: "KG", fornitore: "Caseificio Aurelio" },
+      { nome: "Guanciale", quantita: 10, limiteMinimo: 15, unita: "KG", fornitore: "RomaTravel", daOrdinare: true },
+      { nome: "Pecorino romano", quantita: 2, limiteMinimo: 8, unita: "KG", fornitore: "Caseificio Aurelio", daOrdinare: true },
       { nome: "Pomodoro pelato", quantita: 6, limiteMinimo: 20, unita: "KG", fornitore: "OrtoSud" },
       { nome: "Spaghetti", quantita: 18, limiteMinimo: 20, unita: "KG", fornitore: "Pastificio Conti" },
       { nome: "Olio extravergine", quantita: 12, limiteMinimo: 10, unita: "L", fornitore: "Frantoio Verde" },
@@ -207,6 +208,42 @@ async function main() {
     { piatto: "Grigliata mista", prodotto: "Olio extravergine", quantita: 0.015 },
     { piatto: "Vino della casa", prodotto: "Vino rosso della casa", quantita: 0.5 }
   ];
+
+  const alessandro = utentiCreati.find((u) => u.email === "alessandro.rossi@gestionale.local");
+  const guanciale = ricercaProdotti.find((p) => p.nome === "Guanciale");
+  const spaghetti = ricercaProdotti.find((p) => p.nome === "Spaghetti");
+
+  if (!alessandro || !guanciale || !spaghetti) {
+    throw new Error("Seed forniture: responsabile o prodotti non trovati");
+  }
+
+  await prisma.fornitura.create({
+    data: {
+      fornitore: "RomaTravel",
+      creatoDaId: alessandro.id,
+      righe: {
+        create: [
+          { prodottoId: guanciale.id, quantita: 10 }
+        ]
+      }
+    }
+  });
+
+  await prisma.fornitura.create({
+    data: {
+      fornitore: "Pastificio Conti",
+      creatoDaId: alessandro.id,
+      ricevuta: true,
+      creatoIl: subDays(new Date(), 4),
+      ricevutaIl: subDays(new Date(), 2),
+      righe: {
+        create: [
+          { prodottoId: spaghetti.id, quantita: 8 }
+        ]
+      },
+      note: "Consegnata con un giorno di ritardo",
+    }
+  });
 
   for (const riga of ricette) {
     const piatto = ricercaPiatti.find((p) => p.nome === riga.piatto);
