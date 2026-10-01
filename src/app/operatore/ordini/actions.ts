@@ -15,9 +15,6 @@ export async function creaOrdine(input: unknown) {
   if (!(await leggiSessione())) {
     return { ok: false as const, errore: "Non autorizzato" };
   }
-  if (!(await leggiSessione())) {
-    return { ok: false as const, errore: "Non autorizzato" };
-  }
   const controllo = ordineSchema.safeParse(input);
 
   if (!controllo.success) {
