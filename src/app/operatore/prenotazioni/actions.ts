@@ -1,10 +1,14 @@
-'use server'
+"use server";
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { prenotazioneSchema } from "./schema";
+import { leggiSessione } from "@/lib/sessione";
 
 export async function creaPrenotazione(input: unknown) {
+  if (!(await leggiSessione())) {
+    return { ok: false as const, errore: "Non autorizzato" };
+  }
   const controllo = prenotazioneSchema.safeParse(input);
 
   if (!controllo.success) {
@@ -20,8 +24,8 @@ export async function creaPrenotazione(input: unknown) {
       copertiPrenotati: dati.copertiPrenotati,
       dataOra: dati.dataOra,
       note: dati.note || null,
-      tavoloId: dati.tavoloId || null
-    }
+      tavoloId: dati.tavoloId || null,
+    },
   });
 
   revalidatePath("/operatore/prenotazioni/agenda");
@@ -30,8 +34,11 @@ export async function creaPrenotazione(input: unknown) {
 }
 
 export async function siediPrenotazione(prenotazioneId: string) {
+  if (!(await leggiSessione())) {
+    return { ok: false as const, errore: "Non autorizzato" };
+  }
   const prenotazione = await prisma.prenotazione.findUnique({
-    where: { id: prenotazioneId }
+    where: { id: prenotazioneId },
   });
 
   if (!prenotazione) {
@@ -43,7 +50,7 @@ export async function siediPrenotazione(prenotazioneId: string) {
   }
 
   const giaOccupato = await prisma.occupazione.findFirst({
-    where: { tavoloId: prenotazione.tavoloId, terminataAlle: null }
+    where: { tavoloId: prenotazione.tavoloId, terminataAlle: null },
   });
 
   if (giaOccupato) {
@@ -54,8 +61,8 @@ export async function siediPrenotazione(prenotazioneId: string) {
     data: {
       tavoloId: prenotazione.tavoloId,
       prenotazioneId: prenotazione.id,
-      copertiPresenti: prenotazione.copertiPrenotati
-    }
+      copertiPresenti: prenotazione.copertiPrenotati,
+    },
   });
 
   revalidatePath("/operatore/sala/tavoli");

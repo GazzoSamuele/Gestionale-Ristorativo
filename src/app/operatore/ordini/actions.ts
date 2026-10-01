@@ -1,16 +1,23 @@
-'use server'
+"use server";
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { ordineSchema } from "./schema";
+import { leggiSessione } from "@/lib/sessione";
 
 const prossimoStato = {
   NUOVI_ARRIVATI: "IN_CORSO",
   IN_CORSO: "PRONTI",
-  PRONTI: null
+  PRONTI: null,
 } as const;
 
 export async function creaOrdine(input: unknown) {
+  if (!(await leggiSessione())) {
+    return { ok: false as const, errore: "Non autorizzato" };
+  }
+  if (!(await leggiSessione())) {
+    return { ok: false as const, errore: "Non autorizzato" };
+  }
   const controllo = ordineSchema.safeParse(input);
 
   if (!controllo.success) {
@@ -25,7 +32,7 @@ export async function creaOrdine(input: unknown) {
     }
 
     const occupazione = await prisma.occupazione.findFirst({
-      where: { id: occupazioneId, terminataAlle: null }
+      where: { id: occupazioneId, terminataAlle: null },
     });
 
     if (!occupazione) {
@@ -38,7 +45,7 @@ export async function creaOrdine(input: unknown) {
   }
 
   const piatti = await prisma.piatto.findMany({
-    where: { id: { in: righe.map((r) => r.piattoId) }, disponibile: true }
+    where: { id: { in: righe.map((r) => r.piattoId) }, disponibile: true },
   });
 
   const prezzi = new Map(piatti.map((p) => [p.id, p.prezzo]));
@@ -56,19 +63,19 @@ export async function creaOrdine(input: unknown) {
       piattoId: riga.piattoId,
       quantita: riga.quantita,
       note: riga.note || null,
-      prezzoUnitario: prezzo
+      prezzoUnitario: prezzo,
     });
   }
-  
+
   await prisma.ordine.create({
     data: {
       fonte,
       occupazioneId: fonte === "SALA" ? occupazioneId : null,
       nomeCliente: fonte === "ASPORTO" ? nomeCliente : null,
       righe: {
-        create: righeDaCreare
-      }
-    }
+        create: righeDaCreare,
+      },
+    },
   });
 
   revalidatePath("/operatore/ordini/traccia");
@@ -80,8 +87,11 @@ export async function creaOrdine(input: unknown) {
 }
 
 export async function avanzaOrdine(ordineId: string) {
+  if (!(await leggiSessione())) {
+    return { ok: false as const, errore: "Non autorizzato" };
+  }
   const ordine = await prisma.ordine.findUnique({
-    where: { id: ordineId }
+    where: { id: ordineId },
   });
 
   if (!ordine) {
@@ -96,7 +106,7 @@ export async function avanzaOrdine(ordineId: string) {
 
   await prisma.ordine.update({
     where: { id: ordine.id },
-    data: { stato: prossimo, statoDalle: new Date() }
+    data: { stato: prossimo, statoDalle: new Date() },
   });
 
   revalidatePath("/operatore/ordini/traccia");

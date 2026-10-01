@@ -1,17 +1,24 @@
-'use server'
+"use server";
 
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { leggiSessione } from "@/lib/sessione";
 
 const SpostaTavoloInput = z.object({
   id: z.string().min(1),
   posX: z.number().min(0).max(100),
-  posY: z.number().min(0).max(100)
+  posY: z.number().min(0).max(100),
 });
 
-export async function spostaTavolo(input: { id: string; posX: number; posY: number }) {
-
+export async function spostaTavolo(input: {
+  id: string;
+  posX: number;
+  posY: number;
+}) {
+  if (!(await leggiSessione())) {
+    return { ok: false as const, errore: "Non autorizzato" };
+  }
   const controllo = SpostaTavoloInput.safeParse(input);
 
   if (!controllo.success) {
@@ -23,7 +30,7 @@ export async function spostaTavolo(input: { id: string; posX: number; posY: numb
   try {
     await prisma.tavolo.update({
       where: { id },
-      data: { posX, posY }
+      data: { posX, posY },
     });
   } catch {
     return { ok: false as const, errore: "Tavolo non trovato" };
@@ -36,10 +43,16 @@ export async function spostaTavolo(input: { id: string; posX: number; posY: numb
 
 const OccupaTavoloInput = z.object({
   tavoloId: z.string().min(1),
-  copertiPresenti: z.number().int().min(1)
+  copertiPresenti: z.number().int().min(1),
 });
 
-export async function occupaTavolo(input: { tavoloId: string; copertiPresenti: number }) {
+export async function occupaTavolo(input: {
+  tavoloId: string;
+  copertiPresenti: number;
+}) {
+  if (!(await leggiSessione())) {
+    return { ok: false as const, errore: "Non autorizzato" };
+  }
   const controllo = OccupaTavoloInput.safeParse(input);
 
   if (!controllo.success) {
@@ -49,7 +62,7 @@ export async function occupaTavolo(input: { tavoloId: string; copertiPresenti: n
   const { tavoloId, copertiPresenti } = controllo.data;
 
   const giaOccupato = await prisma.occupazione.findFirst({
-    where: { tavoloId, terminataAlle: null }
+    where: { tavoloId, terminataAlle: null },
   });
 
   if (giaOccupato) {
@@ -57,7 +70,7 @@ export async function occupaTavolo(input: { tavoloId: string; copertiPresenti: n
   }
 
   await prisma.occupazione.create({
-    data: { tavoloId, copertiPresenti }
+    data: { tavoloId, copertiPresenti },
   });
 
   revalidatePath("/operatore/sala/tavoli");
@@ -66,10 +79,13 @@ export async function occupaTavolo(input: { tavoloId: string; copertiPresenti: n
 }
 
 const LiberaTavoloInput = z.object({
-  tavoloId: z.string().min(1)
+  tavoloId: z.string().min(1),
 });
 
 export async function liberaTavolo(input: { tavoloId: string }) {
+  if (!(await leggiSessione())) {
+    return { ok: false as const, errore: "Non autorizzato" };
+  }
   const controllo = LiberaTavoloInput.safeParse(input);
 
   if (!controllo.success) {
@@ -79,7 +95,7 @@ export async function liberaTavolo(input: { tavoloId: string }) {
   const { tavoloId } = controllo.data;
 
   const occupazione = await prisma.occupazione.findFirst({
-    where: { tavoloId, terminataAlle: null }
+    where: { tavoloId, terminataAlle: null },
   });
 
   if (!occupazione) {
@@ -88,10 +104,10 @@ export async function liberaTavolo(input: { tavoloId: string }) {
 
   await prisma.occupazione.update({
     where: { id: occupazione.id },
-    data: { 
-      terminataAlle: new Date(), 
-      oraPagamento: new Date()
-    }
+    data: {
+      terminataAlle: new Date(),
+      oraPagamento: new Date(),
+    },
   });
 
   revalidatePath("/operatore/sala/tavoli");

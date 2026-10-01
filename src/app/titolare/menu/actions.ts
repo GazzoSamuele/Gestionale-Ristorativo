@@ -1,60 +1,65 @@
-'use server'
+"use server";
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { piattoSchema } from "./schema";
+import { eTitolare } from "@/lib/sessione";
 
-export async function toggleDisponibilita(piattoId:string) {
-    const ricercaPiatto = await prisma.piatto.findUnique({ 
-        where: { 
-            id: piattoId 
-        }
-    });
+export async function toggleDisponibilita(piattoId: string) {
+  if (!(await eTitolare())) {
+    return { ok: false as const, errore: "Non autorizzato" };
+  }
+  const ricercaPiatto = await prisma.piatto.findUnique({
+    where: {
+      id: piattoId,
+    },
+  });
 
-    if (!ricercaPiatto) {
-        return { ok: false as const, errore: "Piatto non trovato" }
-    }
-    
-  await prisma.piatto.update({ 
-    where: { id: piattoId }, 
-    data: { disponibile: !ricercaPiatto.disponibile } 
-    })
+  if (!ricercaPiatto) {
+    return { ok: false as const, errore: "Piatto non trovato" };
+  }
 
-    revalidatePath("/titolare/menu")
+  await prisma.piatto.update({
+    where: { id: piattoId },
+    data: { disponibile: !ricercaPiatto.disponibile },
+  });
 
-     return { ok: true as const };
+  revalidatePath("/titolare/menu");
+
+  return { ok: true as const };
 }
 
 export async function creaPiatto(input: unknown) {
+  if (!(await eTitolare())) {
+    return { ok: false as const, errore: "Non autorizzato" };
+  }
+  const controllo = piattoSchema.safeParse(input);
 
-    const controllo = piattoSchema.safeParse(input);
+  if (!controllo.success) {
+    return { ok: false as const, errore: "Dati non validi" };
+  }
 
-    if (!controllo.success) {
-        return { ok: false as const, errore: "Dati non validi" };
-    }
+  const dati = controllo.data;
 
-    const dati = controllo.data;
+  const categoriaTrovata = await prisma.categoria.findUnique({
+    where: {
+      id: dati.categoriaId,
+    },
+  });
 
-    const categoriaTrovata = await prisma.categoria.findUnique({
-        where: {
-            id: dati.categoriaId
-        }
-    }); 
+  if (!categoriaTrovata) {
+    return { ok: false as const, errore: "Categoria non trovata" };
+  }
 
-    if (!categoriaTrovata) {
-        return { ok: false as const, errore: "Categoria non trovata"}
-    }
+  await prisma.piatto.create({
+    data: {
+      nome: dati.nome,
+      prezzo: dati.prezzo,
+      categoriaId: dati.categoriaId,
+    },
+  });
 
-    await prisma.piatto.create({
-        data: { 
-            nome: dati.nome,  
-            prezzo: dati.prezzo,
-            categoriaId: dati.categoriaId
-        }
-    })
+  revalidatePath("/titolare/menu");
 
-    revalidatePath("/titolare/menu")
-
-    return { ok: true as const }
-    
+  return { ok: true as const };
 }
