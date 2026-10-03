@@ -99,3 +99,16 @@
     cursor: not-allowed;
   }
 }
+
+.avviso {
+  margin: 1.4rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  text-align: center;
+  color: v.$muted;
+
+  a {
+    color: v.$rosso;
+    font-weight: 700;
+  }
+}

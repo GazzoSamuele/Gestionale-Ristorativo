@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { FormEvent } from "react";
 import { authClient } from "@/lib/auth-client";
@@ -72,6 +73,11 @@ export default function LoginPage() {
             {invio ? "Accesso…" : "Entra"}
           </button>
         </form>
+
+        <p className={styles.avviso}>
+          Demo pubblica: i dati sono inventati e condivisi tra tutti i visitatori, non inserire
+          dati personali reali. <Link href="/privacy">Privacy</Link>
+        </p>
       </div>
     </section>
   );
